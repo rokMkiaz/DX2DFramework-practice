@@ -1,5 +1,7 @@
 #pragma once
 
+#define NOMINMAX
+
 #ifdef _DEBUG
 #pragma comment(linker,"/entry:WinMainCRTStartup /subsystem:console" )
 #endif 
