@@ -10,124 +10,39 @@ Execute::Execute()
 	graphics->Initialize();
 	graphics->CreateBackBuffer(static_cast<uint>(Settings::Get().GetWidth()),static_cast<uint>(Settings::Get().GetHeight()));
 	
-	//vertex data
-	{
-		vertices = new VertexTexture[4];
-		vertices[0].position = D3DXVECTOR3(-0.5f, -0.5f, 0.0f);
-		vertices[0].uv = D3DXVECTOR2(0.0f, 1.0f);
+	//vertex,Index data
+	
+	geometry.AddVertex(D3D11_VertexTexture(D3DXVECTOR3(-0.5f, -0.5f, 0.0f), D3DXVECTOR2(0.0f, 1.0f)));
+	geometry.AddVertex(D3D11_VertexTexture(D3DXVECTOR3(-0.5f, +0.5f, 0.0f), D3DXVECTOR2(0.0f, 0.0f)));
+	geometry.AddVertex(D3D11_VertexTexture(D3DXVECTOR3(+0.5f, -0.5f, 0.0f), D3DXVECTOR2(1.0f, 1.0f)));
+	geometry.AddVertex(D3D11_VertexTexture(D3DXVECTOR3(+0.5f, +0.5f, 0.0f), D3DXVECTOR2(1.0f, 0.0f)));
+	geometry.AddIndex(0);	geometry.AddIndex(1);	geometry.AddIndex(2);
+	geometry.AddIndex(2);	geometry.AddIndex(1);	geometry.AddIndex(3);
 
-		vertices[1].position = D3DXVECTOR3(-0.5f, +0.5f, 0.0f);
-		vertices[1].uv = D3DXVECTOR2(0.0f, 0.0f);
-
-		vertices[2].position = D3DXVECTOR3(+0.5f, -0.5f, 0.0f);
-		vertices[2].uv = D3DXVECTOR2(1.0f, 1.0f);
-
-		vertices[3].position = D3DXVECTOR3(+0.5f, +0.5f, 0.0f);
-		vertices[3].uv = D3DXVECTOR2(1.0f, 0.0f);
-	}
 	//vertex bufffer
-	{
-		D3D11_BUFFER_DESC desc;
-		ZeroMemory(&desc, sizeof(D3D11_BUFFER_DESC));
-		desc.Usage = D3D11_USAGE_IMMUTABLE;
-		desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-		desc.ByteWidth = sizeof(VertexTexture) * 4;
+	vertex_buffer = new D3D11_VertexBuffer(graphics);
+	vertex_buffer->Create(geometry.GetVertices());
 
-		D3D11_SUBRESOURCE_DATA sub_data;
-		ZeroMemory(&sub_data, sizeof(D3D11_SUBRESOURCE_DATA));
-		sub_data.pSysMem = vertices;
-
-		auto hr = graphics->GetDevice()->CreateBuffer(&desc, &sub_data, &vertex_buffer);
-		assert(SUCCEEDED(hr));
-
-	}
-	//Index Data
-	{
-		indices = new uint[6]{ 0,1,2,2,1,3 };
-
-	}
 	//Index Buffer
-	{
-		D3D11_BUFFER_DESC desc;
-		ZeroMemory(&desc, sizeof(D3D11_BUFFER_DESC));
-		desc.Usage = D3D11_USAGE_IMMUTABLE;
-		desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-		desc.ByteWidth = sizeof(uint) * 6;
-
-		D3D11_SUBRESOURCE_DATA sub_data;
-		ZeroMemory(&sub_data, sizeof(D3D11_SUBRESOURCE_DATA));
-		sub_data.pSysMem = indices;
-
-		auto hr = graphics->GetDevice()->CreateBuffer(&desc, &sub_data, &index_buffer);
-		assert(SUCCEEDED(hr));
-
-
-	}
+	index_buffer = new D3D11_IndexBuffer(graphics);
+	index_buffer->Create(geometry.GetIndices());
+	
 
 
 	//Vertex Shader
-	{
-		auto hr = D3DX11CompileFromFileA
-		(
-			"Texture.hlsl",
-			nullptr,
-			nullptr,
-			"VS",
-			"vs_5_0",
-			0,
-			0,
-			nullptr,
-			&vs_blob,
-			nullptr,
-			nullptr
-		);
-		assert(SUCCEEDED(hr));
-
-		hr = graphics->GetDevice()->CreateVertexShader(vs_blob->GetBufferPointer(), vs_blob->GetBufferSize(), nullptr, &vertex_shader);
-		assert(SUCCEEDED(hr));
-	}
-
+	vertex_shader = new D3D11_Shader(graphics);
+	vertex_shader->Create(ShaderScope_VS, "Texture.hlsl");
+	
 	//Input Layout
-	{
-	/*
-		D3D11_INPUT_ELEMENT_DESC layout_desc[]
-		{
-			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		};
-	*/
-		D3D11_INPUT_ELEMENT_DESC layout_desc[]
-		{
-			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		};
+	input_layout = new D3D11_InputLayout(graphics);
+	input_layout->Create(D3D11_VertexTexture::descs, D3D11_VertexTexture::count, vertex_shader->GetShaderBlob());
 
-		auto hr = graphics->GetDevice()->CreateInputLayout(layout_desc, 2, vs_blob->GetBufferPointer(), vs_blob->GetBufferSize(), &input_layout);
-		assert(SUCCEEDED(hr));
-	}
+
 
 	//Pixel Shader
+	pixel_shader = new D3D11_Shader(graphics);
+	pixel_shader->Create(ShaderScope_PS, "Texture.hlsl");
 
-	{
-		auto hr = D3DX11CompileFromFileA
-		(
-			"Texture.hlsl",
-			nullptr,
-			nullptr,
-			"PS",
-			"ps_5_0",
-			0,
-			0,
-			nullptr,
-			&ps_blob,
-			nullptr,
-			nullptr
-		);
-		assert(SUCCEEDED(hr));
-
-		hr = graphics->GetDevice()->CreatePixelShader(ps_blob->GetBufferPointer(), ps_blob->GetBufferSize(), nullptr, &pixel_shader);
-		assert(SUCCEEDED(hr));
-	}
 
 	//create world view Projection
 	{
@@ -287,20 +202,16 @@ Execute::~Execute()
 
 	SAFE_RELEASE(gpu_buffer);
 
-	SAFE_RELEASE(pixel_shader);
-	SAFE_RELEASE(ps_blob);
+	SAFE_DELETE(pixel_shader);
 
-	SAFE_RELEASE(input_layout);
 
-	SAFE_RELEASE(vertex_shader);
-	SAFE_RELEASE(vs_blob);
+	SAFE_DELETE(input_layout);
 
-	SAFE_DELETE_ARRAY(indices);
-	SAFE_RELEASE(index_buffer);
+	SAFE_DELETE(vertex_shader);
 
-	SAFE_RELEASE(vertex_buffer);
-	SAFE_DELETE_ARRAY(vertices);
 
+	SAFE_DELETE(index_buffer);
+	SAFE_DELETE(vertex_buffer);
 	SAFE_DELETE(graphics);
 }
 
@@ -333,26 +244,26 @@ void Execute::Update()
 
 void Execute::Render()
 {
-	uint stride = sizeof(VertexTexture);
-	uint offset=0;
 
 	graphics->Begin();
 	{
 		//IA
-		graphics->GetDeviceContext()->IASetVertexBuffers(0, 1, &vertex_buffer, &stride, &offset);
-		graphics->GetDeviceContext()->IASetIndexBuffer(index_buffer, DXGI_FORMAT_R32_UINT, 0);
-		graphics->GetDeviceContext()->IASetInputLayout(input_layout);
+		ID3D11Buffer* buffers[] = { vertex_buffer->GetResource() };
+
+		graphics->GetDeviceContext()->IASetVertexBuffers(0, 1, buffers, &vertex_buffer->GetStride(), &vertex_buffer->GetOffset());
+		graphics->GetDeviceContext()->IASetIndexBuffer(index_buffer->GetResourc(), DXGI_FORMAT_R32_UINT, index_buffer->GetOffset());
+		graphics->GetDeviceContext()->IASetInputLayout(input_layout->GetResource());
 		graphics->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		//VS
-		graphics->GetDeviceContext()->VSSetShader(vertex_shader, nullptr, 0);
+		graphics->GetDeviceContext()->VSSetShader(static_cast<ID3D11VertexShader*>(vertex_shader->GetResource()), nullptr, 0);
 		graphics->GetDeviceContext()->VSSetConstantBuffers(0, 1, &gpu_buffer);
 
 		//RS
 		graphics->GetDeviceContext()->RSSetState(rasterizer_state);
 
 		//PS
-		graphics->GetDeviceContext()->PSSetShader(pixel_shader, nullptr, 0);
+		graphics->GetDeviceContext()->PSSetShader(static_cast<ID3D11PixelShader*>(pixel_shader->GetResource()), nullptr, 0);
 		graphics->GetDeviceContext()->PSSetShaderResources(0, 1, &shader_resource);
 		graphics->GetDeviceContext()->PSSetSamplers(0, 1, &sampler_state);
 

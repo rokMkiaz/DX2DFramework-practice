@@ -37,3 +37,11 @@ typedef unsigned int  uint;
 
 //Framework
 #include"Settings.h"
+#include"Graphics.h"
+
+#include"Vertex\D3D11_Vertex.h"
+#include"Vertex\D3D11_Geometry.h"
+#include"InputAssembler\D3D11_VertexBuffer.h"
+#include"InputAssembler\D3D11_IndexBuffer.h"
+#include"InputAssembler\D3D11_InputLayout.h"
+#include"Shader\D3D11_Shader.h"
