@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "Window.h"
-#include "Execute.h"
+#include "Core\Window.h"
+#include "Core\Execute.h"
 
 int APIENTRY WinMain
 (

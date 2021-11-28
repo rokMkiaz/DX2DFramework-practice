@@ -36,18 +36,18 @@ typedef unsigned int  uint;
 #define SAFE_RELEASE(p)      { if(p) {(p)->Release(); (p)=nullptr; }  }
 
 //Framework
-#include"Settings.h"
-#include"Graphics.h"
+#include"Core\Settings.h"
+#include"Core\Graphics.h"
 
-#include"Vertex\D3D11_Vertex.h"
-#include"Vertex\D3D11_Geometry.h"
-#include"InputAssembler\D3D11_VertexBuffer.h"
-#include"InputAssembler\D3D11_IndexBuffer.h"
-#include"InputAssembler\D3D11_InputLayout.h"
-#include"Shader\D3D11_Shader.h"
-#include"Shader\D3D11_ConstantBuffer.h"
-#include"Shader\D3D11_SamplerState.h"
-#include"Shader\D3D11_Texture.h"
-#include"Rasterizer\D3D11RasterizerState.h"
-#include"Rasterizer\D3D11_Viewport.h"
-
+#include"Core\D3D11\Vertex\D3D11_Vertex.h"
+#include"Core\D3D11\Vertex\D3D11_Geometry.h"
+#include"Core\D3D11\InputAssembler\D3D11_VertexBuffer.h"
+#include"Core\D3D11\InputAssembler\D3D11_IndexBuffer.h"
+#include"Core\D3D11\InputAssembler\D3D11_InputLayout.h"
+#include"Core\D3D11\Shader\D3D11_Shader.h"
+#include"Core\D3D11\Shader\D3D11_ConstantBuffer.h"
+#include"Core\D3D11\Shader\D3D11_SamplerState.h"
+#include"Core\D3D11\Shader\D3D11_Texture.h"
+#include"Core\D3D11\Rasterizer\D3D11RasterizerState.h"
+#include"Core\D3D11\Rasterizer\D3D11_Viewport.h"
+#include"Core\D3D11\OutputMerger\D3D11_BlendState.h"
