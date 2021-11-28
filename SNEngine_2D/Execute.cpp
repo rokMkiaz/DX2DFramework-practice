@@ -44,6 +44,22 @@ Execute::Execute()
 	pixel_shader->Create(ShaderScope_PS, "Texture.hlsl");
 
 
+	//create constant buffer
+	gpu_buffer = new D3D11_ConstantBuffer(graphics);
+	gpu_buffer->Create<TRANSFORM_DATA>();
+
+	//create Rasterizer state
+	rasterizer_state = new D3D11RasterizerState(graphics);
+	rasterizer_state->Create(D3D11_CULL_BACK, D3D11_FILL_SOLID);
+
+	//create Shader Resource view
+	texture = new D3D11_Texture(graphics);
+	texture->Create("Free.png");
+
+	//Create Sampler state
+	sampler_state= new D3D11_SamplerState(graphics);
+	sampler_state->Create(D3D11_FILTER_MIN_MAG_MIP_LINEAR,D3D11_TEXTURE_ADDRESS_CLAMP);
+
 	//create world view Projection
 	{
 		D3DXMatrixIdentity(&world);
@@ -59,20 +75,6 @@ Execute::Execute()
 		D3DXMatrixOrthoLH(&projection, Settings::Get().GetWidth(), Settings::Get().GetHeight(), 0, 1);
 		//D3DXMatrixOrthoOffCenterLH(&view,0,Settings::Get().GetWidth(),0, Settings::Get().GetHeight(),0,1);  좌표계 선택
 
-		std::cout << "View Matrix" << std::endl;
-		std::cout << view._11 << " " << view._12 << " " << view._13 << " " << view._14 << std::endl;
-		std::cout << view._21 << " " << view._22 << " " << view._23 << " " << view._24 << std::endl;
-		std::cout << view._31 << " " << view._32 << " " << view._33 << " " << view._34 << std::endl;
-		std::cout << view._41 << " " << view._42 << " " << view._43 << " " << view._44 << std::endl;
-
-		std::cout << std::endl;
-
-		std::cout << "Projection Matrix" << std::endl;
-		std::cout << projection._11 << " " << projection._12 << " " << projection._13 << " " << projection._14 << std::endl;
-		std::cout << projection._21 << " " << projection._22 << " " << projection._23 << " " << projection._24 << std::endl;
-		std::cout << projection._31 << " " << projection._32 << " " << projection._33 << " " << projection._34 << std::endl;
-		std::cout << projection._41 << " " << projection._42 << " " << projection._43 << " " << projection._44 << std::endl;
-
 		//world
 		D3DXMATRIX world_Scale;
 		D3DXMatrixScaling(&world_Scale,500,500,1 );
@@ -86,85 +88,11 @@ Execute::Execute()
 
 	}
 
-	//create constant buffer
-	{
-		D3D11_BUFFER_DESC desc;
-		ZeroMemory(&desc, sizeof(D3D11_BUFFER_DESC));
-		desc.Usage = D3D11_USAGE_DYNAMIC;
-		desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-		desc.ByteWidth = sizeof(TRANSFROM_DATA);
-		desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
 
-		auto hr = graphics->GetDevice()->CreateBuffer(&desc, nullptr, &gpu_buffer);
-		assert(SUCCEEDED(hr));
-	}
 
-	//create Rasterizer state
-	{
-		D3D11_RASTERIZER_DESC desc;
-		ZeroMemory(&desc, sizeof(D3D11_RASTERIZER_DESC));
-		desc.FillMode = D3D11_FILL_SOLID; //채우기 또는 채울지
-		desc.CullMode = D3D11_CULL_BACK;//Culling할 대상(Front,Back)
-		desc.FrontCounterClockwise = false; //앞뒷면 방향(시계,반시계 방향)
 
-		auto hr = graphics->GetDevice()->CreateRasterizerState(&desc, &rasterizer_state);
 
-	}
-	//create Shader Resource view
-	{
-		//auto hr = D3DX11CreateShaderResourceViewFromFileA //신버전에서는 제거됨
-		//(
-		//	graphics->GetDevice(),
-		//	"Free.png",
-		//	nullptr,
-		//	nullptr,
-		//	&shader_resource[0],
-		//	nullptr
-		//);
-		//assert(SUCCEEDED(hr));
 
-	 //  hr = D3DX11CreateShaderResourceViewFromFileA //신버전에서는 제거됨
-		//(
-		//	graphics->GetDevice(),
-		//	"war.png",
-		//	nullptr,
-		//	nullptr,
-		//	&shader_resource[1],
-		//	nullptr
-		//);
-		//assert(SUCCEEDED(hr));
-		auto hr = D3DX11CreateShaderResourceViewFromFileA //신버전에서는 제거됨
-		(
-			graphics->GetDevice(),
-			"Free.png",
-			nullptr,
-			nullptr,
-			&shader_resource,
-			nullptr
-		);
-		assert(SUCCEEDED(hr));
-	}
-	//Create Sampler state
-	{
-		D3D11_SAMPLER_DESC desc;
-		ZeroMemory(&desc, sizeof(D3D11_SAMPLER_DESC));
-		desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP; //u좌표가 늘어났을때
-		desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP; //v가 늘어났을때
-		desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP; //나머지가 늘어났을때
-		desc.BorderColor[0] = 1; //외곽선
-		desc.BorderColor[1] = 0;
-		desc.BorderColor[2] = 0;
-		desc.BorderColor[3] = 1;
-		desc.ComparisonFunc = D3D11_COMPARISON_ALWAYS; //비교
-		desc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR; //축소 및 확대될때 보정
-		desc.MaxAnisotropy = 16; //비등방성 필터링
-		desc.MaxLOD = std::numeric_limits<float>::max(); //Level of detail 조정
-		desc.MinLOD = std::numeric_limits<float>::min();
-		desc.MipLODBias = 0.0f; //오프셋 정보
-
-		auto hr = graphics->GetDevice()->CreateSamplerState(&desc, &sampler_state);
-		assert(SUCCEEDED(hr));
-	}
 	//Create Blend State
 	{
 		D3D11_BLEND_DESC desc;
@@ -193,18 +121,12 @@ Execute::Execute()
 Execute::~Execute()
 {
 	SAFE_RELEASE(blend_state);
-	SAFE_RELEASE(sampler_state);
-	SAFE_RELEASE(shader_resource);
-	//SAFE_RELEASE(shader_resource[1]);
-	//SAFE_RELEASE(shader_resource[0]);
 
-	SAFE_RELEASE(rasterizer_state);
-
-	SAFE_RELEASE(gpu_buffer);
-
+	SAFE_DELETE(sampler_state);
+	SAFE_DELETE(texture);
+	SAFE_DELETE(rasterizer_state);
+	SAFE_DELETE(gpu_buffer);
 	SAFE_DELETE(pixel_shader);
-
-
 	SAFE_DELETE(input_layout);
 
 	SAFE_DELETE(vertex_shader);
@@ -222,24 +144,15 @@ void Execute::Update()
 	D3DXMATRIX P; //임시 부모행렬
 	D3DXMatrixRotationZ(&P, radian);
 	//world = world * P;
+	auto buffer = gpu_buffer->Map<TRANSFORM_DATA>();
+	{
+		D3DXMatrixTranspose(&buffer->world,&world); //전치행렬변환 함수
+		D3DXMatrixTranspose(&buffer->view, &view);
+		D3DXMatrixTranspose(&buffer->projection, &projection);
+	}
+	gpu_buffer->Unmap();
 
-	D3DXMatrixTranspose(&cpu_buffer.world,&world); //전치행렬변환 함수
-	D3DXMatrixTranspose(&cpu_buffer.view, &view);
-	D3DXMatrixTranspose(&cpu_buffer.projection, &projection);
 
-	D3D11_MAPPED_SUBRESOURCE mapped_subresource;
-	graphics->GetDeviceContext()->Map
-	(
-		gpu_buffer,
-		0,
-		D3D11_MAP_WRITE_DISCARD,
-		0,
-		&mapped_subresource
-	);
-
-	memcpy(mapped_subresource.pData, &cpu_buffer, sizeof(TRANSFROM_DATA));
-
-	graphics->GetDeviceContext()->Unmap(gpu_buffer, 0);
 }
 
 void Execute::Render()
@@ -257,15 +170,20 @@ void Execute::Render()
 
 		//VS
 		graphics->GetDeviceContext()->VSSetShader(static_cast<ID3D11VertexShader*>(vertex_shader->GetResource()), nullptr, 0);
-		graphics->GetDeviceContext()->VSSetConstantBuffers(0, 1, &gpu_buffer);
+		ID3D11Buffer* cbuffers[] = { gpu_buffer->GetResource() };
+		graphics->GetDeviceContext()->VSSetConstantBuffers(0, 1, cbuffers);
 
 		//RS
-		graphics->GetDeviceContext()->RSSetState(rasterizer_state);
+		graphics->GetDeviceContext()->RSSetState(rasterizer_state->GetResource());
 
 		//PS
 		graphics->GetDeviceContext()->PSSetShader(static_cast<ID3D11PixelShader*>(pixel_shader->GetResource()), nullptr, 0);
-		graphics->GetDeviceContext()->PSSetShaderResources(0, 1, &shader_resource);
-		graphics->GetDeviceContext()->PSSetSamplers(0, 1, &sampler_state);
+		
+		ID3D11ShaderResourceView* shader_resources[] = { texture->GetResource() };
+		graphics->GetDeviceContext()->PSSetShaderResources(0, 1, shader_resources);
+
+		ID3D11SamplerState* samplers[]{ sampler_state->GetResource() };
+		graphics->GetDeviceContext()->PSSetSamplers(0, 1, samplers);
 
 		//OM
 		graphics->GetDeviceContext()->OMSetBlendState(blend_state, nullptr, 0xffffffff);
