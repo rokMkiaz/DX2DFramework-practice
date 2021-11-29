@@ -12,13 +12,9 @@ Execute::Execute()
 	graphics->CreateBackBuffer(static_cast<uint>(Settings::Get().GetWidth()),static_cast<uint>(Settings::Get().GetHeight()));
 	
 	//vertex,Index data
-	
-	geometry.AddVertex(D3D11_VertexTexture(D3DXVECTOR3(-0.5f, -0.5f, 0.0f), D3DXVECTOR2(0.0f, 1.0f)));
-	geometry.AddVertex(D3D11_VertexTexture(D3DXVECTOR3(-0.5f, +0.5f, 0.0f), D3DXVECTOR2(0.0f, 0.0f)));
-	geometry.AddVertex(D3D11_VertexTexture(D3DXVECTOR3(+0.5f, -0.5f, 0.0f), D3DXVECTOR2(1.0f, 1.0f)));
-	geometry.AddVertex(D3D11_VertexTexture(D3DXVECTOR3(+0.5f, +0.5f, 0.0f), D3DXVECTOR2(1.0f, 0.0f)));
-	geometry.AddIndex(0);	geometry.AddIndex(1);	geometry.AddIndex(2);
-	geometry.AddIndex(2);	geometry.AddIndex(1);	geometry.AddIndex(3);
+	D3D11_Geometry< D3D11_VertexTexture>geometry;
+	Geometry_Generator::CreateQuad(geometry);
+
 
 	//vertex bufffer
 	vertex_buffer = new D3D11_VertexBuffer(graphics);
@@ -45,7 +41,7 @@ Execute::Execute()
 	gpu_buffer->Create<TRANSFORM_DATA>();
 
 	//create Rasterizer state
-	rasterizer_state = new D3D11RasterizerState(graphics);
+	rasterizer_state = new D3D11_RasterizerState(graphics);
 	rasterizer_state->Create(D3D11_CULL_BACK, D3D11_FILL_SOLID);
 
 	//create Shader Resource view
@@ -77,9 +73,6 @@ Execute::Execute()
 		world = world_Scale * world_Rotation * world_Translation;
 
 	}
-
-
-
 }
 
 Execute::~Execute()
@@ -122,7 +115,7 @@ void Execute::Render()
 		ID3D11Buffer* buffers[] = { vertex_buffer->GetResource() };
 
 		graphics->GetDeviceContext()->IASetVertexBuffers(0, 1, buffers, &vertex_buffer->GetStride(), &vertex_buffer->GetOffset());
-		graphics->GetDeviceContext()->IASetIndexBuffer(index_buffer->GetResourc(), DXGI_FORMAT_R32_UINT, index_buffer->GetOffset());
+		graphics->GetDeviceContext()->IASetIndexBuffer(index_buffer->GetResource(), DXGI_FORMAT_R32_UINT, index_buffer->GetOffset());
 		graphics->GetDeviceContext()->IASetInputLayout(input_layout->GetResource());
 		graphics->GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 

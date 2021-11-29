@@ -1,12 +1,12 @@
 #pragma once
 
-class D3D11_IndexBuffer final
+class D3D11_IndexBuffer final : public Object
 {
 public:
 	D3D11_IndexBuffer(class Graphics*graphics);
 	~D3D11_IndexBuffer();
 
-	auto GetResourc() const { return buffer; }
+	auto GetResource() const { return buffer; }
 	auto GetStride() const { return stride; }
 	auto GetOffset() const { return offset; }
 	auto GetCount() const { return count; }

@@ -1,6 +1,6 @@
 #pragma once
 
-class D3D11_BlendState final
+class D3D11_BlendState final : public Object
 {
 public:
 	D3D11_BlendState(class Graphics* graphics);

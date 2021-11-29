@@ -1,5 +1,5 @@
 #pragma once
-class D3D11_ConstantBuffer final
+class D3D11_ConstantBuffer final : public Object
 {
 public:
 	D3D11_ConstantBuffer(class Graphics* graphics);

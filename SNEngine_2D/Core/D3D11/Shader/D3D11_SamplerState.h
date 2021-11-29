@@ -1,6 +1,6 @@
 #pragma once
 
-class D3D11_SamplerState final
+class D3D11_SamplerState final : public Object
 {
 public:
 	D3D11_SamplerState(class Graphics* graphics);

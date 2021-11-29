@@ -1,6 +1,6 @@
 #pragma once
 
-class D3D11_VertexBuffer final
+class D3D11_VertexBuffer final : public Object
 {
 public:
 	D3D11_VertexBuffer(class Graphics* graphics);

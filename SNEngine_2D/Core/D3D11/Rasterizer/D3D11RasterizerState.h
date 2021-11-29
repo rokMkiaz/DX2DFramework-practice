@@ -1,10 +1,10 @@
 #pragma once
 
-class D3D11RasterizerState final
+class D3D11_RasterizerState final : public Object
 {
 public:
-	D3D11RasterizerState(class Graphics* graphics);
-	~D3D11RasterizerState();
+	D3D11_RasterizerState(class Graphics* graphics);
+	~D3D11_RasterizerState();
 
 	auto GetResource() const { return state; }
 

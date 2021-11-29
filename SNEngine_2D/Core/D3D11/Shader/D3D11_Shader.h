@@ -15,7 +15,7 @@ enum class CompilationState :uint
 	Failed
 };
 
-class D3D11_Shader final
+class D3D11_Shader final : public Object
 {
 public:
 	D3D11_Shader(class Graphics* graphics);
