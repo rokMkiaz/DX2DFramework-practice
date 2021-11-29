@@ -13,7 +13,9 @@
 
 //STL
 #include<iostream>
+#include<sstream>
 #include<vector>
+#include<unordered_map> //내부적으로 hash table사용
 
 //DirectX
 #include <d3dcompiler.h>
@@ -35,10 +37,16 @@ typedef unsigned int  uint;
 #define SAFE_DELETE_ARRAY(p) { if(p) { delete[] (p); (p)=nullptr;  }  }
 #define SAFE_RELEASE(p)      { if(p) {(p)->Release(); (p)=nullptr; }  }
 
+//Utility
+#include"Utility\Geometry_Generator.h"
+#include"Utility\GUID_Generator.h"
+
 //Framework
 #include"Core\Settings.h"
 #include"Core\Graphics.h"
+#include"Core\Object.h"
 
+//Wrapper class
 #include"Core\D3D11\Vertex\D3D11_Vertex.h"
 #include"Core\D3D11\Vertex\D3D11_Geometry.h"
 #include"Core\D3D11\InputAssembler\D3D11_VertexBuffer.h"
