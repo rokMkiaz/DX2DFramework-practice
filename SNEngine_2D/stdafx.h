@@ -43,8 +43,8 @@ typedef unsigned int  uint;
 
 //Framework
 #include"Core\Settings.h"
-#include"Core\Graphics.h"
 #include"Core\Object.h"
+#include"Core\Graphics.h"
 
 //Wrapper class
 #include"Core\D3D11\Vertex\D3D11_Vertex.h"
@@ -59,3 +59,4 @@ typedef unsigned int  uint;
 #include"Core\D3D11\Rasterizer\D3D11RasterizerState.h"
 #include"Core\D3D11\Rasterizer\D3D11_Viewport.h"
 #include"Core\D3D11\OutputMerger\D3D11_BlendState.h"
+#include"Core\D3D11\D3D11_Pipeline.h"
