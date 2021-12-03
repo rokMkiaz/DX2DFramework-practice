@@ -16,6 +16,9 @@
 #include<sstream>
 #include<vector>
 #include<unordered_map> //내부적으로 hash table사용
+#include<random>
+#include<chrono> 
+#include<functional> //함수포인터
 
 //DirectX
 #include <d3dcompiler.h>
