@@ -23,18 +23,41 @@ Execute::Execute()
 	pipeline = new D3D11_Pipeline(graphics);
 
 
-	player= new Player(graphics,D3DXCOLOR(1.0f,0.0f,0.0f,1.0f));
+	player= new Player(graphics,D3DXCOLOR(1.0f,0.0f,1.0f,1.0f));
 	player->SetPosition(D3DXVECTOR3(100, 0, 0));
 
 
-	monster= new Monster(graphics, D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f));
-	monster->SetPosition(D3DXVECTOR3(-100, 0, 0));
+	monsters.reserve(10);
+	for (uint i = 0; i < 10; i++)
+	{
+		auto random_position = D3DXVECTOR3
+		(
+			Math::Random(-500.0f,500.0f),
+			Math::Random(-500.0f,500.0f),
+			Math::Random(-500.0f,500.0f)
+		);
+
+		auto random_color = D3DXCOLOR
+		(
+			Math::Random(0.0f,1.0f),
+			Math::Random(0.0f, 1.0f),
+			Math::Random(0.0f, 1.0f),
+			1.0f
+		);
+
+		auto monster = monsters.emplace_back(new Monster(graphics, random_color));
+		monster->SetPosition(random_position);
+	}
 
 }
 
 Execute::~Execute()
 {
-	SAFE_DELETE(monster);
+
+	for (auto& monster: monsters)
+	{
+		SAFE_DELETE(monster)
+	};
 	SAFE_DELETE(player);
 	SAFE_DELETE(pipeline);
 	SAFE_DELETE(camera_buffer);
@@ -44,7 +67,19 @@ Execute::~Execute()
 
 void Execute::Update()
 {
+	player->Update();
+	camera->SetPosition(player->GetPosition());
 	camera->Update();
+
+	for (auto& monster : monsters)
+	{
+		monster->Update();
+		if (Intersect::IsIntersect(player, monster))
+		{
+			player->Event();
+			monster->Event();
+		}
+	}
 
 	auto buffer = camera_buffer->Map<CAMERA_DATA>();
 	{
@@ -52,11 +87,6 @@ void Execute::Update()
 		D3DXMatrixTranspose(&buffer->projection, &camera->GetProjectionMatrix());
 	}
 	camera_buffer->Unmap();
-
-	player->Update();
-	monster->Update();
-
-
 
 }
 
@@ -68,7 +98,10 @@ void Execute::Render()
 		pipeline->SetConstantBuffer(0, ShaderScope_VS, camera_buffer);
 
 		player->Render(pipeline);
-		monster->Render(pipeline);
+		for (auto& monster : monsters)
+		{
+			monster->Render(pipeline);
+		}
 	}
 	graphics->End();
 }
