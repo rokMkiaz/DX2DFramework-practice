@@ -5,7 +5,8 @@
 
 
 #include "Scene\Camera.h"
-#include"Scene\Rendering\Rect.h"
+#include"Scene\Rendering\Player.h"
+#include"Scene\Rendering\Monster.h"
 
 Execute::Execute()
 {
@@ -22,17 +23,19 @@ Execute::Execute()
 	pipeline = new D3D11_Pipeline(graphics);
 
 
-	rect = new Rect(graphics);
-	rect->SetPosition(D3DXVECTOR3(100, 0, 0));
+	player= new Player(graphics,D3DXCOLOR(1.0f,0.0f,0.0f,1.0f));
+	player->SetPosition(D3DXVECTOR3(100, 0, 0));
 
-	rect2 = new Rect(graphics);
-	rect2->SetPosition(D3DXVECTOR3(-100, 0, 0));
-	rect2->SetScale(D3DXVECTOR3(100, 300, 1));
+
+	monster= new Monster(graphics, D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f));
+	monster->SetPosition(D3DXVECTOR3(-100, 0, 0));
+
 }
 
 Execute::~Execute()
 {
-	SAFE_DELETE(rect);
+	SAFE_DELETE(monster);
+	SAFE_DELETE(player);
 	SAFE_DELETE(pipeline);
 	SAFE_DELETE(camera_buffer);
 	SAFE_DELETE(camera)
@@ -50,8 +53,11 @@ void Execute::Update()
 	}
 	camera_buffer->Unmap();
 
-	rect->Update();
-	rect2->Update();
+	player->Update();
+	monster->Update();
+
+
+
 }
 
 void Execute::Render()
@@ -61,8 +67,8 @@ void Execute::Render()
 	{
 		pipeline->SetConstantBuffer(0, ShaderScope_VS, camera_buffer);
 
-		rect->Render(pipeline);
-		rect2->Render(pipeline);
+		player->Render(pipeline);
+		monster->Render(pipeline);
 	}
 	graphics->End();
 }
