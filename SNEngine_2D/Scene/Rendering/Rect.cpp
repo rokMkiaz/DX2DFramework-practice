@@ -1,12 +1,14 @@
 #include"stdafx.h"
 #include"Rect.h"
 
-Rect::Rect(Graphics* graphics)
+
+
+Rect::Rect(Graphics* graphics, const D3DXCOLOR& color)
 {
 	//vertex,Index data
-	D3D11_Geometry< D3D11_VertexTexture>geometry;
-	Geometry_Generator::CreateQuad(geometry);
-
+	D3D11_Geometry< D3D11_VertexColor>geometry;
+	Geometry_Generator::CreateQuad(geometry,color);
+	
 
 	//vertex bufffer
 	vertex_buffer = new D3D11_VertexBuffer(graphics);
@@ -18,15 +20,15 @@ Rect::Rect(Graphics* graphics)
 
 	//Vertex Shader
 	vertex_shader = new D3D11_Shader(graphics);
-	vertex_shader->Create(ShaderScope_VS, "../_Asset/Shader/Texture.hlsl");
+	vertex_shader->Create(ShaderScope_VS, "../_Asset/Shader/Color.hlsl");
 
 	//Input Layout
 	input_layout = new D3D11_InputLayout(graphics);
-	input_layout->Create(D3D11_VertexTexture::descs, D3D11_VertexTexture::count, vertex_shader->GetShaderBlob());
+	input_layout->Create(D3D11_VertexColor::descs, D3D11_VertexColor::count, vertex_shader->GetShaderBlob());
 
 	//Pixel Shader
 	pixel_shader = new D3D11_Shader(graphics);
-	pixel_shader->Create(ShaderScope_PS, "../_Asset/Shader/Texture.hlsl");
+	pixel_shader->Create(ShaderScope_PS, "../_Asset/Shader/Color.hlsl");
 
 	//create constant buffer
 	gpu_buffer = new D3D11_ConstantBuffer(graphics);
@@ -36,17 +38,17 @@ Rect::Rect(Graphics* graphics)
 	rasterizer_state = new D3D11_RasterizerState(graphics);
 	rasterizer_state->Create(D3D11_CULL_BACK, D3D11_FILL_SOLID);
 
-	//create Shader Resource view
-	texture = new D3D11_Texture(graphics);
-	texture->Create("../_Asset/Texture/Free.png");
-
-	//Create Sampler state
-	sampler_state = new D3D11_SamplerState(graphics);
-	sampler_state->Create(D3D11_FILTER_MIN_MAG_MIP_LINEAR, D3D11_TEXTURE_ADDRESS_CLAMP);
-
-	//Create Blend State
-	blend_state = new D3D11_BlendState(graphics);
-	blend_state->Create(true);
+	////create Shader Resource view
+	//texture = new D3D11_Texture(graphics);
+	//texture->Create("../_Asset/Texture/Free.png");
+	//
+	////Create Sampler state
+	//sampler_state = new D3D11_SamplerState(graphics);
+	//sampler_state->Create(D3D11_FILTER_MIN_MAG_MIP_LINEAR, D3D11_TEXTURE_ADDRESS_CLAMP);
+	//
+	////Create Blend State
+	//blend_state = new D3D11_BlendState(graphics);
+	//blend_state->Create(true);
 
 	//create world 
 	{
@@ -73,9 +75,9 @@ Rect::Rect(Graphics* graphics)
 
 Rect::~Rect()
 {
-	SAFE_DELETE(blend_state);
-	SAFE_DELETE(sampler_state);
-	SAFE_DELETE(texture);
+	//SAFE_DELETE(blend_state);
+	//SAFE_DELETE(sampler_state);
+	//SAFE_DELETE(texture);
 	SAFE_DELETE(rasterizer_state);
 	SAFE_DELETE(gpu_buffer);
 	SAFE_DELETE(pixel_shader);
@@ -87,6 +89,8 @@ Rect::~Rect()
 
 void Rect::Update()
 {
+	Move();
+
 	D3DXMATRIX world_Scale;
 	D3DXMatrixScaling(&world_Scale, scale.x, scale.y, scale.z);
 
@@ -112,15 +116,15 @@ void Rect::Render(D3D11_Pipeline* pipeline)
 	pipeline_state.vertex_shader = vertex_shader;
 	pipeline_state.pixel_shader = pixel_shader;
 	pipeline_state.rasterizer_state = rasterizer_state;
-	pipeline_state.blend_state = blend_state;
+	//pipeline_state.blend_state = blend_state;
 
 	if (pipeline->Begin(pipeline_state))
 	{
 		pipeline->SetVertexBuffer(vertex_buffer);
 		pipeline->SetIndexBuffer(index_buffer);
 		pipeline->SetConstantBuffer(1, ShaderScope_VS, gpu_buffer);
-		pipeline->SetShaderResource(0, ShaderScope_PS, texture);
-		pipeline->SetSamplerState(0, ShaderScope_PS, sampler_state);
+		//pipeline->SetShaderResource(0, ShaderScope_PS, texture);
+		//pipeline->SetSamplerState(0, ShaderScope_PS, sampler_state);
 		pipeline->DrawIndexed(index_buffer->GetCount(), index_buffer->GetOffset(), vertex_buffer->GetOffset());
 
 		pipeline->End();
