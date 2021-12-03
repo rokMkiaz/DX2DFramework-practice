@@ -40,6 +40,16 @@ typedef unsigned int  uint;
 #define SAFE_DELETE_ARRAY(p) { if(p) { delete[] (p); (p)=nullptr;  }  }
 #define SAFE_RELEASE(p)      { if(p) {(p)->Release(); (p)=nullptr; }  }
 
+
+//Math
+#include"Math\Math.h"
+
+//Timer
+#include"Timer\Timer.h"
+
+//Intersect
+#include"Intersect\Intersect.h"
+
 //Utility
 #include"Utility\Geometry_Generator.h"
 #include"Utility\GUID_Generator.h"
