@@ -14,6 +14,7 @@
 //STL
 #include<iostream>
 #include<sstream>
+#include<memory> //smart pointer
 #include<vector>
 #include<unordered_map> //내부적으로 hash table사용
 #include<random>
