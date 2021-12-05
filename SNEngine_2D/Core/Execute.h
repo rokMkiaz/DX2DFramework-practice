@@ -19,11 +19,10 @@ public:
 	void Render();
 
 private:
-	class Graphics* graphics = nullptr;
+
 	class Camera* camera = nullptr;
 	class D3D11_ConstantBuffer* camera_buffer = nullptr;
 	D3D11_Pipeline* pipeline = nullptr;
 
-	class Player* player = nullptr;
-	std::vector<class Monster*>  monsters ;
+	std::vector<class Actor*> actors;
 };

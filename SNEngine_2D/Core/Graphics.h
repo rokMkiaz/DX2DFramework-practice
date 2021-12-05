@@ -4,8 +4,11 @@
 class Graphics final
 {
 public:
-	Graphics();
-	~Graphics();
+	static Graphics& Get()
+	{
+		static Graphics instance;
+		return instance;
+	}
 
 	void Initialize();
 	void CreateBackBuffer(const uint& width, const uint& height);
@@ -15,6 +18,10 @@ public:
 
 	void Begin(); //그리기 시작
 	void End();
+
+private:
+	Graphics();
+	~Graphics();
 
 private:
 	ID3D11Device* device				       = nullptr;
