@@ -4,6 +4,7 @@ enum class ComponentType : uint
 	Unknown,
 	Camera,
 	Transform,
+	MeshRenderer,
 
 };
 
