@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Core\Window.h"
-#include "Core\Execute.h"
+#include "Core\SceneManager.h"
 
 int APIENTRY WinMain
 (
@@ -17,15 +17,15 @@ int APIENTRY WinMain
 	Settings::Get().SetWidth(static_cast<float>(Window::GetWidth()));
 	Settings::Get().SetHeight(static_cast<float>(Window::GetHeight()));
 
-	Execute* execute = new Execute();
+	auto scene_manager = std::make_unique<SceneManager>();
+	scene_manager->Initialize();
 
 	while (Window::Update())
 	{
-		execute->Update();
-		execute->Render();
+		scene_manager->Update();
+		scene_manager->Render();
 	}
 
-	SAFE_DELETE(execute);
 	Window::Destroy();
 	return 0;
 }
