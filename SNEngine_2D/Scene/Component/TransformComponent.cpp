@@ -1,8 +1,8 @@
 #include"stdafx.h"
 #include"TransformComponent.h"
 
-TransformComponent::TransformComponent(Actor* const actor, TransformComponent* const transform)
-	:IComponent(actor,transform)
+TransformComponent::TransformComponent(Actor* actor, TransformComponent* transform)
+	: IComponent(actor, transform)
 {
 	D3DXMatrixIdentity(&local);
 	D3DXMatrixIdentity(&world);
@@ -29,6 +29,7 @@ void TransformComponent::SetLocalScale(const D3DXVECTOR3& scale)
 {
 	if (this->local_scale == scale)
 		return;
+
 	this->local_scale = scale;
 	UpdateTransform();
 }
@@ -37,14 +38,16 @@ void TransformComponent::SetLocalPosition(const D3DXVECTOR3& position)
 {
 	if (this->local_position == position)
 		return;
+
 	this->local_position = position;
 	UpdateTransform();
 }
 
 void TransformComponent::SetLocalRotation(const D3DXVECTOR3& rotation)
 {
-	if (this->local_rotation== rotation)
+	if (this->local_rotation == rotation)
 		return;
+
 	this->local_rotation = rotation;
 	UpdateTransform();
 }
@@ -66,7 +69,7 @@ void TransformComponent::SetScale(const D3DXVECTOR3& world_scale)
 	if (GetScale() == world_scale)
 		return;
 
-	if(HasParent())
+	if (HasParent())
 	{
 		D3DXVECTOR3 scale;
 		D3DXVECTOR3 parent_scale = parent->GetScale();
@@ -77,10 +80,7 @@ void TransformComponent::SetScale(const D3DXVECTOR3& world_scale)
 		SetLocalScale(scale);
 	}
 	else
-	{
 		SetLocalScale(world_scale);
-	}
-
 }
 
 auto TransformComponent::GetPosition() -> const D3DXVECTOR3
@@ -127,7 +127,7 @@ auto TransformComponent::GetRotation() -> const D3DXVECTOR3
 	return D3DXVECTOR3
 	(
 		atan2(rotation._31, rotation._33),
-		atan2(-rotation._32, sqrt(pow(rotation._12, 2) + pow(rotation._22, 2))),
+		atan2(-rotation._32,static_cast<float>( sqrt(pow(rotation._12, 2) + pow(rotation._22, 2)))),
 		atan2(rotation._12, rotation._22)
 	);
 }
@@ -139,7 +139,9 @@ void TransformComponent::SetRotation(const D3DXVECTOR3& world_rotation)
 	if (HasParent())
 	{
 		D3DXMATRIX inverse;
-		D3DXMatrixInverse(&inverse, nullptr, &GetWorldRotationMatrix());
+
+		auto pM = GetWorldRotationMatrix();
+		D3DXMatrixInverse(&inverse, nullptr, &pM);
 
 		D3DXVECTOR3 rotation;
 		D3DXVec3TransformNormal(&rotation, &world_rotation, &inverse);
@@ -230,32 +232,29 @@ void TransformComponent::UpdateTransform()
 	D3DXMATRIX S, R, T;
 	D3DXMatrixScaling(&S, local_scale.x, local_scale.y, local_scale.z);
 	D3DXMatrixRotationYawPitchRoll(&R, local_rotation.y, local_rotation.x, local_rotation.z);
-	//D3DXMatrixRotationZ(&R, local_rotation.z);
 	D3DXMatrixTranslation(&T, local_position.x, local_position.y, local_position.z);
 
 	local = S * R * T;
 
 	if (HasParent())
-	{
 		world = local * parent->GetWorldMatrix();
-	}
-	else world = local;
+	else
+		world = local;
 
 	for (const auto& child : childs)
 		child->UpdateTransform();
-
 
 }
 
 void TransformComponent::UpdateConstantBuffer()
 {
-	if (!gpu_buffer)
+	if(!gpu_buffer)
 	{
 		gpu_buffer = std::make_shared<D3D11_ConstantBuffer>(&Graphics::Get());
 		gpu_buffer->Create<TRANSFORM_DATA>();
 	}
 
-	auto gpu_data = gpu_buffer->Map< TRANSFORM_DATA>();
+	auto gpu_data = gpu_buffer->Map<TRANSFORM_DATA>();
 
 	D3DXMatrixTranspose(&gpu_data->world, &world);
 

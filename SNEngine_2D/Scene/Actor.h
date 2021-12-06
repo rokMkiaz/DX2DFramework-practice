@@ -1,5 +1,6 @@
 #pragma once
-#include"Component/IComponent.h"
+#include "Component/IComponent.h"
+
 class Actor final
 {
 public:
@@ -12,11 +13,11 @@ public:
 	void Destroy();
 
 	/*
-		Preoperty
+		Property
 	*/
-	auto GetName() const->const std::string&{ return name;}
+	auto GetName() const -> const std::string& { return name; }
 	void SetName(const std::string& name) { this->name = name; }
-	 
+
 	auto IsActive() const { return is_active; }
 	void SetActive(const bool& is_active) { this->is_active = is_active; }
 
@@ -50,12 +51,11 @@ public:
 	template <typename T>
 	void RemoveComponent();
 
-
 private:
 	std::string name;
 	bool is_active = true;
 
-	std::shared_ptr<class TransformComponent> transform; //최적화 및 개별구성용이함을 위해
+	std::shared_ptr<class TransformComponent> transform;//최적화 및 개별구성용이함을 위해
 	std::vector<std::shared_ptr<IComponent>> components;
 };
 
@@ -71,10 +71,16 @@ inline auto Actor::AddComponent() -> const std::shared_ptr<T>
 
 	components.emplace_back
 	(
-		std::make_shared<T>(this, transform.get())//rew pointer
+		std::make_shared<T>
+		(
+			this,
+			transform.get()
+			)
 	);
 
-	auto new_component = std::static_pointer_cast<T>(components.back());//smart pointer 형변환
+	auto new_component = std::static_pointer_cast<T>(components.back());
+	new_component->Initialize();
+	new_component->SetComponentType(type);
 
 	if constexpr (std::is_same<T, class TransformComponent>::value)
 		transform = new_component;

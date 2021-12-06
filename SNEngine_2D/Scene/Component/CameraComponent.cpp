@@ -28,13 +28,30 @@ void CameraComponent::Destroy()
 }
 
 
+void CameraComponent::UpdateConstantBuffer()
+{
+	if (!gpu_buffer)
+	{
+		gpu_buffer = std::make_shared<D3D11_ConstantBuffer>(&Graphics::Get());
+		gpu_buffer->Create<CAMERA_DATA>();
+	}
+
+	auto gpu_data = gpu_buffer->Map<CAMERA_DATA>();
+	{
+		D3DXMatrixTranspose(&gpu_data->view, &view);
+		D3DXMatrixTranspose(&gpu_data->projection, &proj);
+	}
+	gpu_buffer->Unmap();
+
+}
+
 void CameraComponent::UpdateViewMatrix()
 {
 	auto position = transform->GetPosition();   //보는 위치 원점 위치
 	auto forward = transform->GetForward();// 어디를 볼 것인가.
 	auto up = transform->GetUp();	// 위쪽을 가리키는 방향벡터
-
-	D3DXMatrixLookAtLH(&view,&position, &(position+forward), &up);
+	auto At = position+forward;
+	D3DXMatrixLookAtLH(&view,&position, &At, &up);
 }
 
 void CameraComponent::UpdateProjectionMatrix()

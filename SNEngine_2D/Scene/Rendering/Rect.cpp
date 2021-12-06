@@ -96,19 +96,17 @@ void Rect::Update()
 {
 	Move();
 
-	D3DXMATRIX world_Scale;
-	D3DXMatrixScaling(&world_Scale, scale.x, scale.y, scale.z);
+	D3DXMATRIX S;
+	D3DXMatrixScaling(&S, scale.x, scale.y, scale.z);
 
-	D3DXMATRIX world_Translation;
-	D3DXMatrixTranslation(&world_Translation, position.x, position.y, position.z);
+	D3DXMATRIX T;
+	D3DXMatrixTranslation(&T, position.x, position.y, position.z);
 
-	world = world_Scale  * world_Translation;
-
-
+	world = S * T;
 
 	auto buffer = gpu_buffer->Map<TRANSFORM_DATA>();
 	{
-		D3DXMatrixTranspose(&buffer->world, &world); //전치행렬변환 함수
+		D3DXMatrixTranspose(&buffer->world, &world); //전치행렬 변환
 	}
 	gpu_buffer->Unmap();
 
