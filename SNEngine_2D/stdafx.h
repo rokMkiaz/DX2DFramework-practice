@@ -6,6 +6,8 @@
 #pragma comment(linker,"/entry:WinMainCRTStartup /subsystem:console" )
 #endif 
 
+#pragma warning(disable : 4506)
+
 //Window
 #include<Windows.h>
 #include<assert.h> 
@@ -16,6 +18,7 @@
 #include<sstream>
 #include<memory> //smart pointer
 #include<vector>
+#include<map>
 #include<unordered_map> //내부적으로 hash table사용
 #include<random>
 #include<chrono> 
