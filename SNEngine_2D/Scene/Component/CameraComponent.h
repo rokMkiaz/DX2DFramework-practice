@@ -10,7 +10,7 @@ struct CAMERA_DATA
 class CameraComponent final : public IComponent
 {
 public:
-	CameraComponent(class Actor * const actor, class TransformComponent* const transform);
+	CameraComponent(class Context* const context, class Actor * const actor, class TransformComponent* const transform);
 	~CameraComponent() = default;
 
 	void Initialize() override;

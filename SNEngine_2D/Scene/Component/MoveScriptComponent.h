@@ -5,7 +5,7 @@
 class MoveScriptComponent final : public IComponent
 {
 public:
-	MoveScriptComponent(class Actor* const actor, class TransformComponent* const transform);
+	MoveScriptComponent(class Context* const context, class Actor* const actor, class TransformComponent* const transform);
 	~MoveScriptComponent() = default;
 
 	void Initialize() override;

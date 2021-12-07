@@ -1,9 +1,10 @@
 #include"stdafx.h"
 #include"MeshRendererComponent.h"
 
-MeshRendererComponent::MeshRendererComponent(Actor* const actor, TransformComponent* const transform)
-	: IComponent(actor, transform)
+MeshRendererComponent::MeshRendererComponent(Context* const context,Actor* const actor, TransformComponent* const transform)
+	: IComponent(context,actor, transform)
 {
+	graphics = context->GetSubsystem<Graphics>();
 }
 
 void MeshRendererComponent::Initialize()
@@ -28,27 +29,27 @@ void MeshRendererComponent::SetStandardMesh()
 
 
 	//vertex bufffer
-	vertex_buffer = std::make_shared< D3D11_VertexBuffer>(&Graphics::Get());
+	vertex_buffer = std::make_shared< D3D11_VertexBuffer>(graphics);
 	vertex_buffer->Create(geometry.GetVertices());
 
 
 	//Index Buffer
-	index_buffer = std::make_shared <D3D11_IndexBuffer>(&Graphics::Get());
+	index_buffer = std::make_shared <D3D11_IndexBuffer>(graphics);
 	index_buffer->Create(geometry.GetIndices());
 }
 
 void MeshRendererComponent::SetStandardMaterial()
 {
 	//Vertex Shader
-	vertex_shader = std::make_shared <D3D11_Shader>(&Graphics::Get());
+	vertex_shader = std::make_shared <D3D11_Shader>(graphics);
 	vertex_shader->Create(ShaderScope_VS, "../_Asset/Shader/Color.hlsl");
 
 	//Pixel Shader
-	pixel_shader = std::make_shared <D3D11_Shader>(&Graphics::Get());
+	pixel_shader = std::make_shared <D3D11_Shader>(graphics);
 	pixel_shader->Create(ShaderScope_PS, "../_Asset/Shader/Color.hlsl");
 
 	//Input Layout
-	input_layout = std::make_shared <D3D11_InputLayout>(&Graphics::Get());
+	input_layout = std::make_shared <D3D11_InputLayout>(graphics);
 	input_layout->Create(D3D11_VertexColor::descs, D3D11_VertexColor::count, vertex_shader->GetShaderBlob());
 
 }

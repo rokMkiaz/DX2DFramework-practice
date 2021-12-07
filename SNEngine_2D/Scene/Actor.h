@@ -4,7 +4,7 @@
 class Actor final
 {
 public:
-	Actor();
+	Actor(class Context* const context );
 	~Actor();
 
 	void Initialize();
@@ -52,6 +52,8 @@ public:
 	void RemoveComponent();
 
 private:
+	class Context* context = nullptr; 
+
 	std::string name;
 	bool is_active = true;
 
@@ -73,6 +75,7 @@ inline auto Actor::AddComponent() -> const std::shared_ptr<T>
 	(
 		std::make_shared<T>
 		(
+			context,
 			this,
 			transform.get()
 			)

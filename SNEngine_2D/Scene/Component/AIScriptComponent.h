@@ -4,7 +4,7 @@
 class AIScriptComponent final :public IComponent
 {
 public:
-	AIScriptComponent(class Actor* const actor, class TransformComponent* const transform);
+	AIScriptComponent(class Context* const context,class Actor* const actor, class TransformComponent* const transform);
 	~AIScriptComponent() = default;
 
 	void Initialize() override;

@@ -1,7 +1,7 @@
 #pragma once
 #include "stdafx.h"
 #include"Scene.h"
-#include"Core\Graphics.h"
+
 
 #include"Scene\Actor.h"
 #include"Scene\Component\TransformComponent.h"
@@ -10,13 +10,14 @@
 #include "Scene\Component\MoveScriptComponent.h"
 #include"Scene\Component\AIScriptComponent.h"
 
-Scene::Scene()
+Scene::Scene(Context* const context )
+	:context(context)
 {
+	graphics = context->GetSubsystem<Graphics>();
 
-	Graphics::Get().Initialize();
-	Graphics::Get().CreateBackBuffer(static_cast<uint>(Settings::Get().GetWidth()),static_cast<uint>(Settings::Get().GetHeight()));
+	graphics->CreateBackBuffer(static_cast<uint>(Settings::Get().GetWidth()),static_cast<uint>(Settings::Get().GetHeight()));
 	//Pipe line
-	pipeline = std::make_shared<D3D11_Pipeline>(&Graphics::Get());
+	pipeline = std::make_shared<D3D11_Pipeline>(graphics);
 
 	auto camera = CreateActor();
 	camera->SetName("MainCamera");
@@ -53,7 +54,7 @@ void Scene::Update()
 
 void Scene::Render()
 {
-	Graphics::Get().Begin();
+	graphics->Begin();
 	{
 		for (const auto& actor : actors)
 		{
@@ -66,12 +67,12 @@ void Scene::Render()
 			actor->Render(pipeline.get());
 		}
 	}
-	Graphics::Get().End();
+	graphics->End();
 }
 
 auto Scene::CreateActor(const bool& is_active) -> const std::shared_ptr<class Actor>
 {
-	auto actor = std::make_shared<Actor>();
+	auto actor = std::make_shared<Actor>(context);
 	actor->SetActive(is_active);
 	AddActor(actor);
 

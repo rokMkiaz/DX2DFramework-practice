@@ -9,7 +9,7 @@ struct TRANSFORM_DATA
 class TransformComponent final : public IComponent
 {
 public:
-	TransformComponent(class Actor* const actor, class TransformComponent* const transform);
+	TransformComponent(class Context* const context, class Actor* const actor, class TransformComponent* const transform);
 	~TransformComponent();
 
 

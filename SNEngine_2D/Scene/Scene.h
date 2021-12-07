@@ -6,7 +6,7 @@ class Scene	final
 {
 
 public:
-	Scene();
+	Scene(class Context* const context);
 	~Scene();
 
 	void Update();
@@ -16,6 +16,8 @@ public:
 	void AddActor(const std::shared_ptr<class Actor>& actor);
 
 private:
+	class Context* context = nullptr;
+	class Graphics* graphics = nullptr;
 	std::shared_ptr<class D3D11_Pipeline> pipeline ;
 	std::vector<std::shared_ptr<class Actor>> actors;
 };
