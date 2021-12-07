@@ -14,6 +14,7 @@
 
 
 //STL
+#include<typeinfo>//RTTI¿ë Çì´õ
 #include<iostream>
 #include<sstream>
 #include<memory> //smart pointer
@@ -61,7 +62,13 @@ typedef unsigned int  uint;
 //Framework
 #include"Core\Settings.h"
 #include"Core\Object.h"
-#include"Core\Graphics.h"
+
+//Main System
+#include"Core\Context.h"
+
+//Sub System
+#include"Core\Subsystem\Graphics.h"
+#include"Core\Subsystem\SceneManager.h"
 
 //Wrapper class
 #include"Core\D3D11\Vertex\D3D11_Vertex.h"
