@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Core\Window.h"
-#include "Core\SceneManager.h"
+#include "Core\Engine.h"
 
 int APIENTRY WinMain
 (
@@ -17,13 +17,12 @@ int APIENTRY WinMain
 	Settings::Get().SetWidth(static_cast<float>(Window::GetWidth()));
 	Settings::Get().SetHeight(static_cast<float>(Window::GetHeight()));
 
-	auto scene_manager = std::make_unique<SceneManager>();
-	scene_manager->Initialize();
+	auto engine= std::make_unique<Engine>();
 
 	while (Window::Update())
 	{
-		scene_manager->Update();
-		scene_manager->Render();
+		engine->Update();
+		engine->Render();
 	}
 
 	Window::Destroy();
