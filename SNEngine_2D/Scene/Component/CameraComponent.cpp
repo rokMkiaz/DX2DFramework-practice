@@ -27,24 +27,6 @@ void CameraComponent::Destroy()
 {
 }
 
-
-void CameraComponent::UpdateConstantBuffer()
-{
-	if (!gpu_buffer)
-	{
-		gpu_buffer = std::make_shared<D3D11_ConstantBuffer>(context->GetSubsystem<Graphics>());
-		gpu_buffer->Create<CAMERA_DATA>();
-	}
-
-	auto gpu_data = gpu_buffer->Map<CAMERA_DATA>();
-	{
-		D3DXMatrixTranspose(&gpu_data->view, &view);
-		D3DXMatrixTranspose(&gpu_data->projection, &proj);
-	}
-	gpu_buffer->Unmap();
-
-}
-
 void CameraComponent::UpdateViewMatrix()
 {
 	auto position = transform->GetPosition();   //보는 위치 원점 위치

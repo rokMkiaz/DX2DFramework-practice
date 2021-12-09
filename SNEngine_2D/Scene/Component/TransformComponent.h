@@ -1,10 +1,7 @@
 #pragma once
 #include"IComponent.h"
 
-struct TRANSFORM_DATA
-{
-	D3DXMATRIX world;
-};
+
 
 class TransformComponent final : public IComponent
 {
@@ -65,11 +62,7 @@ public:
 
 	void UpdateTransform();
 
-	/*
-		TODO
-	*/
-	auto GetConstantBuffer() const { return gpu_buffer; }
-	void UpdateConstantBuffer();
+
 
 private:
 	D3DXVECTOR3 local_scale    = D3DXVECTOR3(1, 1, 1);
@@ -82,6 +75,5 @@ private:
 	TransformComponent* parent = nullptr;
 	std::vector<TransformComponent*>childs;
 
-	std::shared_ptr<class D3D11_ConstantBuffer> gpu_buffer;
 
 };

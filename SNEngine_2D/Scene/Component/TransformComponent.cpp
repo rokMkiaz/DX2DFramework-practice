@@ -246,18 +246,3 @@ void TransformComponent::UpdateTransform()
 
 }
 
-void TransformComponent::UpdateConstantBuffer()
-{
-	if(!gpu_buffer)
-	{
-		gpu_buffer = std::make_shared<D3D11_ConstantBuffer>(context->GetSubsystem<Graphics>());
-		gpu_buffer->Create<TRANSFORM_DATA>();
-	}
-
-	auto gpu_data = gpu_buffer->Map<TRANSFORM_DATA>();
-
-	D3DXMatrixTranspose(&gpu_data->world, &world);
-
-	gpu_buffer->Unmap();
-
-}
