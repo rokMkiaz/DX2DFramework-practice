@@ -52,8 +52,6 @@ typedef unsigned int  uint;
 //Timer
 #include"Timer\Timer.h"
 
-//Intersect
-#include"Intersect\Intersect.h"
 
 //Utility
 #include"Utility\Geometry_Generator.h"
@@ -69,6 +67,7 @@ typedef unsigned int  uint;
 //Sub System
 #include"Core\Subsystem\Graphics.h"
 #include"Core\Subsystem\SceneManager.h"
+#include"Core\Subsystem\Renderer\Renderer.h"
 
 //Wrapper class
 #include"Core\D3D11\Vertex\D3D11_Vertex.h"
