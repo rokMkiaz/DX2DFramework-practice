@@ -51,10 +51,3 @@ auto SceneManager::RegisterScene(const std::string& scene_name) -> class Scene* 
 	return new_scene.get();
 }
 
-
-
-void SceneManager::Render()
-{
-	if (!current_scene.expired())
-		current_scene.lock()->Render();
-}

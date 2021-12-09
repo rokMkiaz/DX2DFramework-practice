@@ -50,11 +50,7 @@ public:
 		for(const auto& subsystem: subsystems)
 			subsystem->Update();
 	}
-	void Render_subsystems()
-	{
-		for (const auto& subsystem : subsystems)
-			subsystem->Render();
-	}
+
 
 private:
 	std::vector<ISubsystem*> subsystems;
