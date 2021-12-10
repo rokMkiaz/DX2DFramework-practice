@@ -4,6 +4,7 @@
 #include"MeshRendererComponent.h"
 #include"MoveScriptComponent.h"
 #include"AIScriptComponent.h"
+#include"AnimatorComponent.h"
 
 IComponent::IComponent(Context* const context,Actor* const actor, TransformComponent* const transform)
 	: context(context), actor(actor), transform(transform)
@@ -24,3 +25,4 @@ REGISTER_COMPONENT_TYPE(CameraComponent,       ComponentType::Camera)
 REGISTER_COMPONENT_TYPE(MeshRendererComponent, ComponentType::MeshRenderer)
 REGISTER_COMPONENT_TYPE(MoveScriptComponent,   ComponentType::MoveScript)
 REGISTER_COMPONENT_TYPE(AIScriptComponent ,    ComponentType::AIScript)
+REGISTER_COMPONENT_TYPE(AnimatorComponent,     ComponentType::Animator)
