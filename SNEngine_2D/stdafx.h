@@ -49,9 +49,6 @@ typedef unsigned int  uint;
 //Math
 #include"Math\Math.h"
 
-//Timer
-#include"Timer\Timer.h"
-
 
 //Utility
 #include"Utility\Geometry_Generator.h"
@@ -65,6 +62,7 @@ typedef unsigned int  uint;
 #include"Core\Context.h"
 
 //Sub System
+#include"Core\Subsystem\Timer.h"
 #include"Core\Subsystem\Graphics.h"
 #include"Core\Subsystem\SceneManager.h"
 #include"Core\Subsystem\Renderer\Renderer.h"
@@ -83,3 +81,7 @@ typedef unsigned int  uint;
 #include"Core\D3D11\Rasterizer\D3D11_Viewport.h"
 #include"Core\D3D11\OutputMerger\D3D11_BlendState.h"
 #include"Core\D3D11\D3D11_Pipeline.h"
+
+
+//Resources
+#include "Resource\Animation.h"
