@@ -11,3 +11,12 @@ struct TRANSFORM_DATA
 {
 	D3DXMATRIX world;
 };
+
+struct ANIMATION_DATA
+{
+	D3DXVECTOR2 sprite_offset;
+	D3DXVECTOR2 sprite_size;
+	D3DXVECTOR2 texture_size;
+	float is_anymated;
+	float padding;
+};

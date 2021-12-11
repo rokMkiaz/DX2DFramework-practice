@@ -26,6 +26,9 @@ public:
 	void SetShaderResource(const uint& slot, const uint& scope, const D3D11_Texture* resource);
 	void SetSamplerState(const uint& slot, const uint& scope, const D3D11_SamplerState* state);
 
+	void SetConstantBuffer_nullptr(const uint& slot, const uint& scope);
+	void SetShaderResource_nullptr(const uint& slot, const uint& scope);
+
 	void Draw(const uint& vertex_count, const uint& vertex_offset = 0);
 	void DrawIndexed(const uint& index_count, const uint& index_offset = 0, const uint& vertex_offset = 0);
 
