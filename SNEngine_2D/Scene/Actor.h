@@ -4,7 +4,7 @@
 class Actor final
 {
 public:
-	Actor(class Context* const context );
+	Actor(class Context* const context);
 	~Actor();
 
 	void Initialize();
@@ -51,12 +51,12 @@ public:
 	void RemoveComponent();
 
 private:
-	class Context* context = nullptr; 
+	class Context* context = nullptr;
 
 	std::string name;
 	bool is_active = true;
 
-	std::shared_ptr<class TransformComponent> transform;//최적화 및 개별구성용이함을 위해
+	std::shared_ptr<class TransformComponent> transform;
 	std::vector<std::shared_ptr<IComponent>> components;
 };
 

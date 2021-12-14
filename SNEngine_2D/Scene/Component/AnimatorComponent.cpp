@@ -1,8 +1,8 @@
-#include"stdafx.h"
-#include"AnimatorComponent.h"
+#include "stdafx.h"
+#include "AnimatorComponent.h"
 
 AnimatorComponent::AnimatorComponent(Context* const context, Actor* const actor, TransformComponent* const transform)
-	:IComponent(context,actor,transform)
+	: IComponent(context, actor, transform)
 {
 	timer = context->GetSubsystem<Timer>();
 }
@@ -15,6 +15,7 @@ void AnimatorComponent::Update()
 {
 	if (current_animation.expired() || !IsPlaying())
 		return;
+
 	frame_counter += timer->GetDeltaTimeMS();
 
 	if (frame_counter > GetCurrentKeyframe()->time)
@@ -25,16 +26,16 @@ void AnimatorComponent::Update()
 		{
 		case RepeatType::Once:
 		{
-			if (current_frame_number >= current_animation.lock()->GetKeyFrameCount())
+			if (current_frame_number >= current_animation.lock()->GetKeyframeCount())
 			{
-				current_frame_number = current_animation.lock()->GetKeyFrameCount()-1;
+				current_frame_number = current_animation.lock()->GetKeyframeCount() - 1;
 				Pause();
 			}
 			break;
 		}
 		case RepeatType::Loop:
 		{
-			current_frame_number %= current_animation.lock()->GetKeyFrameCount();
+			current_frame_number %= current_animation.lock()->GetKeyframeCount();
 			break;
 		}
 		}
@@ -50,7 +51,7 @@ void AnimatorComponent::Destroy()
 
 auto AnimatorComponent::GetCurrentAnimation() const -> const std::shared_ptr<class Animation>
 {
-	return current_animation.expired()? nullptr: current_animation.lock();
+	return current_animation.expired() ? nullptr : current_animation.lock();
 }
 
 void AnimatorComponent::SetCurrentAnimation(const std::string& animation_name)
@@ -65,19 +66,30 @@ void AnimatorComponent::SetCurrentAnimation(const std::string& animation_name)
 auto AnimatorComponent::GetCurrentKeyframe() const -> const Keyframe* const
 {
 	assert(!current_animation.expired());
-	return current_animation.lock()->GetKeyFrameFromIndex(current_frame_number);
+	return current_animation.lock()->GetKeyframeFromIndex(current_frame_number);
 }
 
-auto AnimatorComponent::AddAnimation(const std::string& animation_name, std::shared_ptr<class Animation>& animation)
+void AnimatorComponent::AddAnimation(const std::string& animation_name, const std::shared_ptr<class Animation>& animation)
 {
 	assert(animations.find(animation_name) == animations.end());
 	animations[animation_name] = animation;
 }
 
+void AnimatorComponent::AddAnimation(const std::string& path)
+{
+	auto resource_manager = context->GetSubsystem<ResourceManager>();
+
+	auto animation = resource_manager->Load<Animation>(path);
+	if (!animation)
+		assert(false);
+
+	AddAnimation(animation->GetResourceName(), animation);
+}
+
 void AnimatorComponent::Play()
 {
-	animation_mode = AnimationMode::Play; 
-	frame_counter = 0;
+	animation_mode = AnimationMode::Play;
+	frame_counter = 0.0f;
 }
 
 void AnimatorComponent::Stop()

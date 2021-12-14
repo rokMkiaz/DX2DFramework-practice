@@ -41,12 +41,12 @@ void MeshRendererComponent::SetStandardMesh()
 void MeshRendererComponent::SetStandardMaterial()
 {
 	//Vertex Shader
-	vertex_shader = std::make_shared <D3D11_Shader>(graphics);
-	vertex_shader->Create(ShaderScope_VS, "../_Asset/Shader/Texture.hlsl");
+	vertex_shader = std::make_shared<D3D11_Shader>(graphics);
+	vertex_shader->Create(ShaderScope_VS, "../_Asset/Shader/Animation.hlsl");
 
 	//Pixel Shader
-	pixel_shader = std::make_shared <D3D11_Shader>(graphics);
-	pixel_shader->Create(ShaderScope_PS, "../_Asset/Shader/Texture.hlsl");
+	pixel_shader = std::make_shared<D3D11_Shader>(graphics);
+	pixel_shader->Create(ShaderScope_PS, "../_Asset/Shader/Animation.hlsl");
 
 	//Input Layout
 	input_layout = std::make_shared <D3D11_InputLayout>(graphics);

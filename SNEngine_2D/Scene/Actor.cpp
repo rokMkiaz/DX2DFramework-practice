@@ -3,8 +3,8 @@
 #include "Component/TransformComponent.h"
 #include "Component/MeshRendererComponent.h"
 
-Actor::Actor(class Context* const context)
-	:context(context)
+Actor::Actor(Context* const context)
+	: context(context)
 {
 	AddComponent<TransformComponent>();
 }

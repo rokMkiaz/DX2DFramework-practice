@@ -19,29 +19,30 @@ Scene::Scene(Context* const context )
 	/*
 		Animation
 	*/
-	auto idle_animation = std::make_shared<Animation>(context);
-	idle_animation->AddKeyFrame(D3DXVECTOR2(5.0f,2.0f), D3DXVECTOR2(28.0f,38.0f),200);
-	idle_animation->AddKeyFrame(D3DXVECTOR2(36.0f,2.0f), D3DXVECTOR2(28.0f,38.0f), 200);
-	idle_animation->AddKeyFrame(D3DXVECTOR2(65.0f,2.0f), D3DXVECTOR2(28.0f,38.0f), 200);
-	idle_animation->SetRepeatType(RepeatType::Loop);
-	idle_animation->SetSpriteTexture("_Assets/Texture/Slug.png");
-	idle_animation->SetSpriteTextureSize(D3DXVECTOR2(600.0f, 800.0f));
+	// auto idle_animation = std::make_shared<Animation>(context);
+	// idle_animation->SetAnimationName("Idle");
+	// idle_animation->AddKeyframe(D3DXVECTOR2(5.0f, 2.0f), D3DXVECTOR2(28.0f, 38.0f), 200);
+	// idle_animation->AddKeyframe(D3DXVECTOR2(36.0f, 2.0f), D3DXVECTOR2(28.0f, 38.0f), 200);
+	// idle_animation->AddKeyframe(D3DXVECTOR2(65.0f, 2.0f), D3DXVECTOR2(28.0f, 38.0f), 200);
+	// idle_animation->SetRepeatType(RepeatType::Loop);
+	// idle_animation->SetSpriteTexture("../_Asset/Texture/Slug.png");
+	// idle_animation->SetSpriteTextureSize(D3DXVECTOR2(600.0f, 800.0f));
+	// idle_animation->SaveToFile("../_Asset/Animation/Idle.xml");
 
 	/*
-	Actor
+		Actors
 	*/
 	auto camera = CreateActor();
-	camera->SetName("MainCamera");
 	camera->AddComponent<CameraComponent>();
+	camera->SetName("MainCamera");
 
 	auto player = CreateActor();
 	player->SetName("Player");
-	player->GetComponent<TransformComponent>()->SetScale(D3DXVECTOR3{ 100.0f, 100.0f, 1.0f });
 	player->GetComponent<TransformComponent>()->SetPosition(D3DXVECTOR3{ +100.0f, 0.0f, 0.0f });
 	player->AddComponent<MeshRendererComponent>();
 	player->AddComponent<MoveScriptComponent>();
 	auto animator = player->AddComponent<AnimatorComponent>();
-	animator->AddAnimation("Idle", idle_animation);
+	animator->AddAnimation("../_Asset/Animation/Idle.xml");
 	animator->SetAnimationMode(AnimationMode::Play);
 	animator->SetCurrentAnimation("Idle");
 
@@ -80,6 +81,7 @@ auto Scene::CreateActor(const bool& is_active) -> const std::shared_ptr<class Ac
 
 	return actor;
 }
+
 
 void Scene::AddActor(const std::shared_ptr<class Actor>& actor)
 {
