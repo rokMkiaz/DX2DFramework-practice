@@ -1,5 +1,5 @@
-#pragma once 
-#include"ISubsystem.h"
+#pragma once
+#include "ISubsystem.h"
 
 class SceneManager final : public ISubsystem
 {
@@ -16,8 +16,6 @@ public:
 	void SetCurrentScene(const std::string& scene_name);
 
 	auto RegisterScene(const std::string& scene_name) -> class Scene* const;
-
-
 
 private:
 	std::weak_ptr<class Scene> current_scene;

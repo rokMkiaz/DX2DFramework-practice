@@ -1,12 +1,12 @@
-#include"stdafx.h"
-#include"Renderer.h"
-#include"Scene\Scene.h"
-#include"Scene\Actor.h"
-#include"Scene\Component\CameraComponent.h"
-#include"Scene\Component\MeshRendererComponent.h"
+#include "stdafx.h"
+#include "Renderer.h"
+#include "Scene/Scene.h"
+#include "Scene/Actor.h"
+#include "Scene/Component/CameraComponent.h"
+#include "Scene/Component/MeshRendererComponent.h"
 
 Renderer::Renderer(Context* const context)
-	:ISubsystem(context)
+	: ISubsystem(context)
 {
 }
 
@@ -17,7 +17,6 @@ Renderer::~Renderer()
 bool Renderer::Initialize()
 {
 	graphics = context->GetSubsystem<Graphics>();
-
 	graphics->CreateBackBuffer(static_cast<uint>(Settings::Get().GetWidth()), static_cast<uint>(Settings::Get().GetHeight()));
 
 	pipeline = std::make_shared<D3D11_Pipeline>(graphics);
@@ -25,7 +24,6 @@ bool Renderer::Initialize()
 	CreateConstantBuffers();
 	CreateRasterizerStates();
 	CreateBlendStates();
-
 
 	return true;
 }
@@ -49,6 +47,7 @@ void Renderer::UpdateRenderables(Scene* const scene)
 	auto actors = scene->GetActors();
 	if (actors.empty())
 		return;
+
 	for (const auto& actor : actors)
 	{
 		auto camera_component = actor->GetComponent<CameraComponent>();
@@ -59,6 +58,7 @@ void Renderer::UpdateRenderables(Scene* const scene)
 			renderables[RenderableType::Camera].emplace_back(actor.get());
 			camera = camera_component.get();
 		}
+
 		if (mesh_renderer_component)
 		{
 			renderables[RenderableType::Opaque].emplace_back(actor.get());
@@ -66,11 +66,8 @@ void Renderer::UpdateRenderables(Scene* const scene)
 	}
 }
 
-
-
 void Renderer::UpdateCameraBuffer()
 {
-
 	auto buffer = gpu_camera_buffer->Map<CAMERA_DATA>();
 	*buffer = cpu_camera_buffer;
 	gpu_camera_buffer->Unmap();
@@ -89,4 +86,3 @@ void Renderer::UpdateAnimationBuffer()
 	*buffer = cpu_animation_buffer;
 	gpu_animation_buffer->Unmap();
 }
-

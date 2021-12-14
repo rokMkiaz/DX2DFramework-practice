@@ -1,5 +1,5 @@
-#include"stdafx.h"
-#include"Renderer.h"
+#include "stdafx.h"
+#include "Renderer.h"
 
 void Renderer::CreateConstantBuffers()
 {
@@ -12,7 +12,6 @@ void Renderer::CreateConstantBuffers()
 	gpu_animation_buffer = std::make_shared<D3D11_ConstantBuffer>(graphics);
 	gpu_animation_buffer->Create<ANIMATION_DATA>();
 }
-
 
 void Renderer::CreateRasterizerStates()
 {
@@ -33,8 +32,6 @@ void Renderer::CreateRasterizerStates()
 
 	rasterizers[RasterizerStateType::Cull_None_Wireframe] = std::make_shared<D3D11_RasterizerState>(graphics);
 	rasterizers[RasterizerStateType::Cull_None_Wireframe]->Create(D3D11_CULL_NONE, D3D11_FILL_WIREFRAME);
-
-	
 }
 
 void Renderer::CreateBlendStates()
@@ -44,5 +41,4 @@ void Renderer::CreateBlendStates()
 
 	blend_states[BlendStateType::Alpha] = std::make_shared<D3D11_BlendState>(graphics);
 	blend_states[BlendStateType::Alpha]->Create(true);
-
 }

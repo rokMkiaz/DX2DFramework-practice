@@ -1,8 +1,7 @@
 #pragma once
-#include"../ISubsystem.h"
-#include"Renderer_Types.h"
-#include"Renderer_ConstantBuffers.h"
-
+#include "../ISubsystem.h"
+#include "Renderer_ConstantBuffers.h"
+#include "Renderer_Types.h"
 
 class Renderer final : public ISubsystem
 {
@@ -12,7 +11,7 @@ public:
 
 	bool Initialize() override;
 	void Update() override;
-	
+
 	void UpdateRenderables(class Scene* const scene);
 
 private:

@@ -1,5 +1,5 @@
 #pragma once
-#include"stdafx.h"
+#include "stdafx.h"
 
 struct CAMERA_DATA
 {
@@ -9,7 +9,7 @@ struct CAMERA_DATA
 
 struct TRANSFORM_DATA
 {
-	D3DXMATRIX world;
+	D3DXMATRIX world; //4x4
 };
 
 struct ANIMATION_DATA
@@ -17,6 +17,6 @@ struct ANIMATION_DATA
 	D3DXVECTOR2 sprite_offset;
 	D3DXVECTOR2 sprite_size;
 	D3DXVECTOR2 texture_size;
-	float is_anymated;
+	float is_animated;
 	float padding;
 };

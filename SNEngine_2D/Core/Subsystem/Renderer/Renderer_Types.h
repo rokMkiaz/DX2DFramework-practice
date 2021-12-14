@@ -1,5 +1,5 @@
 #pragma once
-#include"stdafx.h"
+#include "stdafx.h"
 
 enum class RenderableType : uint
 {
@@ -7,7 +7,7 @@ enum class RenderableType : uint
 	Camera,
 };
 
-enum class RasterizerStateType :uint
+enum class RasterizerStateType : uint
 {
 	Cull_Front_Solid,
 	Cull_Back_Solid,
@@ -15,7 +15,6 @@ enum class RasterizerStateType :uint
 	Cull_Front_Wireframe,
 	Cull_Back_Wireframe,
 	Cull_None_Wireframe,
-
 };
 
 enum class BlendStateType : uint

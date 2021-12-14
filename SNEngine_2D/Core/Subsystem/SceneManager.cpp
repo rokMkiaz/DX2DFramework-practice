@@ -2,8 +2,6 @@
 #include "SceneManager.h"
 #include "Scene/Scene.h"
 
-
-
 SceneManager::SceneManager(Context* context)
 	: ISubsystem(context)
 {
@@ -21,6 +19,7 @@ bool SceneManager::Initialize()
 
 	return true;
 }
+
 void SceneManager::Update()
 {
 	if (!current_scene.expired())
@@ -29,12 +28,12 @@ void SceneManager::Update()
 
 auto SceneManager::GetCurrentScene() -> class Scene* const
 {
-	return current_scene.expired() ? nullptr : current_scene.lock().get(); //만료되면  nullptr, sharder_ptr변환함수:lock
+	return current_scene.expired() ? nullptr : current_scene.lock().get();
 }
 
 void SceneManager::SetCurrentScene(const std::string& scene_name)
 {
-	if (scenes.find(scene_name) == scenes.end())//이름을 찾지 못하였다.
+	if (scenes.find(scene_name) == scenes.end())
 		assert(false);
 
 	current_scene = scenes[scene_name];
@@ -50,4 +49,3 @@ auto SceneManager::RegisterScene(const std::string& scene_name) -> class Scene* 
 
 	return new_scene.get();
 }
-
