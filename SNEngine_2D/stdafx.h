@@ -24,6 +24,7 @@
 #include<random>
 #include<chrono> 
 #include<functional> //함수포인터
+#include <mutex>
 
 //DirectX
 #include <d3dcompiler.h>
@@ -51,6 +52,7 @@ typedef unsigned int  uint;
 
 
 //Utility
+#include"Utility\Xml.h"
 #include"Utility\Geometry_Generator.h"
 #include"Utility\GUID_Generator.h"
 
@@ -62,10 +64,11 @@ typedef unsigned int  uint;
 #include"Core\Context.h"
 
 //Sub System
-#include"Core\Subsystem\Timer.h"
-#include"Core\Subsystem\Graphics.h"
-#include"Core\Subsystem\SceneManager.h"
-#include"Core\Subsystem\Renderer\Renderer.h"
+#include "Core/Subsystem/Timer.h"
+#include "Core/Subsystem/Graphics.h"
+#include "Core/Subsystem/ResourceManager.h"
+#include "Core/Subsystem/SceneManager.h"
+#include "Core/Subsystem/Renderer/Renderer.h"
 
 //Wrapper class
 #include"Core\D3D11\Vertex\D3D11_Vertex.h"
