@@ -2,7 +2,7 @@
 #include "Animation.h"
 
 Animation::Animation(Context* const context)
-	: context(context)
+	: IResource(context, ResourceType::Animation)
 {
 }
 
@@ -22,8 +22,9 @@ bool Animation::SaveToFile(const std::string& path)
 	Xml::XMLElement* root = doc.NewElement("Animation");
 	doc.LinkEndChild(root);
 
-	root->SetAttribute("Name", animation_name.c_str());
+	root->SetAttribute("Name", resource_name.c_str());
 	root->SetAttribute("Type", static_cast<uint>(repeat_type));
+	root->SetAttribute("TexturePath", sprite_texture_path.c_str());
 	root->SetAttribute("TextureSizeX", sprite_texture_size.x);
 	root->SetAttribute("TextureSizeY", sprite_texture_size.y);
 
@@ -41,6 +42,7 @@ bool Animation::SaveToFile(const std::string& path)
 
 	return Xml::XMLError::XML_SUCCESS == doc.SaveFile(path.c_str());
 }
+
 bool Animation::LoadFromFile(const std::string& path)
 {
 	Xml::XMLDocument doc;
@@ -52,21 +54,24 @@ bool Animation::LoadFromFile(const std::string& path)
 	}
 
 	Xml::XMLElement* root = doc.FirstChildElement();
-	animation_name = root->Attribute("Name");
+	resource_name = root->Attribute("Name");
 	repeat_type = static_cast<RepeatType>(root->UnsignedAttribute("Type"));
+	sprite_texture_path = root->Attribute("TexturePath");
 	sprite_texture_size.x = root->FloatAttribute("TextureSizeX");
 	sprite_texture_size.y = root->FloatAttribute("TextureSizeY");
+
+	SetSpriteTexture(sprite_texture_path);
 
 	Xml::XMLElement* first_element = root->FirstChildElement();
 	for (; first_element != nullptr; first_element = first_element->NextSiblingElement())
 	{
 		D3DXVECTOR2 offset;
 		offset.x = first_element->FloatAttribute("OffsetX");
-		offset.x = first_element->FloatAttribute("OffsetY");
+		offset.y = first_element->FloatAttribute("OffsetY");
 
 		D3DXVECTOR2 size;
 		size.x = first_element->FloatAttribute("SizeX");
-		size.x = first_element->FloatAttribute("SizeY");
+		size.y = first_element->FloatAttribute("SizeY");
 
 		float time = first_element->FloatAttribute("Time");
 
@@ -78,6 +83,8 @@ bool Animation::LoadFromFile(const std::string& path)
 
 void Animation::SetSpriteTexture(const std::string& path)
 {
+	this->sprite_texture_path = path;
+
 	sprite_texture = std::make_shared<D3D11_Texture>(context->GetSubsystem<Graphics>());
 	sprite_texture->Create(path);
 }

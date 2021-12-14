@@ -1,4 +1,5 @@
 #pragma once
+#include "IResource.h"
 
 enum class RepeatType : uint
 {
@@ -19,17 +20,17 @@ struct Keyframe final
 	double time{ 0.0 };
 };
 
-class Animation final
+class Animation final : public IResource
 {
 public:
 	Animation(class Context* const context);
 	~Animation();
 
-	bool SaveToFile(const std::string& path);
-	bool LoadFromFile(const std::string& path);
+	bool SaveToFile(const std::string& path) override;
+	bool LoadFromFile(const std::string& path) override;
 
-	auto GetAnimationName() const ->const std::string& { return animation_name; }
-	void SetAnimationName(const std::string& name) { this->animation_name = name; }
+	auto GetSpriteTexturePath() const -> const std::string& { return sprite_texture_path; }
+	void SetSpriteTexturePath(const std::string& path) { this->sprite_texture_path = path; }
 
 	auto GetRepeatType() const -> const RepeatType& { return repeat_type; }
 	void SetRepeatType(const RepeatType& repeat_type) { this->repeat_type = repeat_type; }
@@ -51,11 +52,11 @@ public:
 	void AddKeyframe(const D3DXVECTOR2& offset, const D3DXVECTOR2& size, const double& time);
 
 private:
-	class Context* context = nullptr;
 	RepeatType repeat_type = RepeatType::Loop;
-	D3DXVECTOR2 sprite_texture_size = D3DXVECTOR2(1.0f, 1.0f);
 
-	std::string animation_name = "";
 	std::shared_ptr<class D3D11_Texture> sprite_texture;
+	D3DXVECTOR2 sprite_texture_size = D3DXVECTOR2(1.0f, 1.0f);
+	std::string sprite_texture_path = "";
+
 	std::vector<Keyframe> keyframes;
 };
