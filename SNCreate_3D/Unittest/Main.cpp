@@ -2,9 +2,19 @@
 #include "Main.h"
 #include "Systems/Window.h"
 
+#include"Vertex\WorldDemo.h"
+#include"Vertex\UserInterfaceDemo.h"
+#include "Vertex\RectDemo.h"
+#include"Vertex\Vertex_Line.h"
+#include"Vertex\Vertex_Line2.h"
+#include"Vertex\TriangleList.h"
+
 void Main::Initialize()
 {
-
+	Push(new WorldDemo);
+	//Push(new UserInterfaceDemo);
+	//Push(new RectDemo());
+	//Push(new TriangleList());
 }
 
 void Main::Ready()
