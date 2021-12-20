@@ -2,6 +2,7 @@
 #include "Context.h"
 #include "Viewer/Viewport.h"
 #include "Viewer/Perspective.h"
+#include "Viewer/Freedom.h"
 
 
 Context* Context::instance = NULL;
@@ -31,20 +32,15 @@ Context::Context()
 
 	perspective = new Perspective(desc.Width, desc.Height);
 	viewport = new Viewport(desc.Width, desc.Height);
+	camera = new Freedom();
 
-
-	position = D3DXVECTOR3(0, 0, -10);
-	D3DXVECTOR3 forward(0, 0, 1);
-	D3DXVECTOR3 right(1, 0, 0);
-	D3DXVECTOR3 up(0, 1, 0);
-
-	D3DXMatrixLookAtLH(&view, &position, &(position + forward), &up);
 }
 
 Context::~Context()
 {
 	SafeDelete(perspective);
 	SafeDelete(viewport);
+	SafeDelete(camera);
 }
 
 void Context::ResizeScreen()
@@ -55,17 +51,43 @@ void Context::ResizeScreen()
 
 void Context::Update()
 {
+	camera->Update();
 	
 }
 
 void Context::Render()
 {
 	viewport->RSSetViewport();
+
+	string str = string("FrameRate : ") + to_string(ImGui::GetIO().Framerate);
+	Gui::Get()->RenderText(5, 5, 1, 1, 1, str);
+
+	Vector3 R;
+	camera->RotationDegree(&R);
+
+	Vector3 P;
+	camera->Position(&P);
+
+	str = "Camera Rotation : ";
+	str += to_string((int)R.x) + ", " + to_string((int)R.y) + ", " + to_string((int)R.z);
+	Gui::Get()->RenderText(5, 20, 1, 1, 1, str);
+
+	str = "Camera Position : ";
+	str += to_string((int)P.x) + ", " + to_string((int)P.y) + ", " + to_string((int)P.z);
+	Gui::Get()->RenderText(5, 35, 1, 1, 1, str);
+}
+
+Matrix Context::View()
+{
+	Matrix view;
+	camera->GetMatrix(&view);
+
+	return view;
 }
 
 D3DXMATRIX Context::Projection()
 {
-	D3DXMATRIX projection;
+	Matrix projection;
 	perspective->GetMatrix(&projection);
 
 	return projection;
