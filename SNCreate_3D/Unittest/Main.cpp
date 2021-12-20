@@ -2,16 +2,19 @@
 #include "Main.h"
 #include "Systems/Window.h"
 
-#include"Vertex\WorldDemo.h"
+#include"World\GridDemo.h"
+#include"World\WorldDemo3.h"
 #include"Vertex\UserInterfaceDemo.h"
 #include "Vertex\RectDemo.h"
 #include"Vertex\Vertex_Line.h"
 #include"Vertex\Vertex_Line2.h"
 #include"Vertex\TriangleList.h"
+#include"Mesh\CubeDemo.h"
 
 void Main::Initialize()
 {
-	Push(new WorldDemo);
+	Push(new  GridDemo);
+	Push(new CubeDemo);
 	//Push(new UserInterfaceDemo);
 	//Push(new RectDemo());
 	//Push(new TriangleList());
