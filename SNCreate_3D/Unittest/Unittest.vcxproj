@@ -154,26 +154,42 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Mesh\CubeDemo.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Texture\TextureDemo.cpp" />
+    <ClCompile Include="Texture\TextureLoadDemo.cpp" />
     <ClCompile Include="Vertex\RectDemo.cpp" />
     <ClCompile Include="Vertex\TriangleList.cpp" />
     <ClCompile Include="Vertex\UserInterfaceDemo.cpp" />
     <ClCompile Include="Vertex\Vertex_Line.cpp" />
     <ClCompile Include="Vertex\Vertex_Line2.cpp" />
-    <ClCompile Include="Vertex\WorldDemo.cpp" />
+    <ClCompile Include="World\GridDemo.cpp" />
+    <ClCompile Include="World\IndexDemo.cpp" />
+    <ClCompile Include="World\RotationDemo.cpp" />
+    <ClCompile Include="World\WorldDemo.cpp" />
+    <ClCompile Include="World\WorldDemo2.cpp" />
+    <ClCompile Include="World\WorldDemo3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
+    <ClInclude Include="Mesh\CubeDemo.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Texture\TextureDemo.h" />
+    <ClInclude Include="Texture\TextureLoadDemo.h" />
     <ClInclude Include="Vertex\RectDemo.h" />
     <ClInclude Include="Vertex\TriangleList.h" />
     <ClInclude Include="Vertex\UserInterfaceDemo.h" />
     <ClInclude Include="Vertex\Vertex_Line.h" />
     <ClInclude Include="Vertex\Vertex_Line2.h" />
-    <ClInclude Include="Vertex\WorldDemo.h" />
+    <ClInclude Include="World\GridDemo.h" />
+    <ClInclude Include="World\IndexDemo.h" />
+    <ClInclude Include="World\RotationDemo.h" />
+    <ClInclude Include="World\WorldDemo.h" />
+    <ClInclude Include="World\WorldDemo2.h" />
+    <ClInclude Include="World\WorldDemo3.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

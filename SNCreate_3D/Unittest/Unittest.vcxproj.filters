@@ -8,7 +8,15 @@
     <ClCompile Include="Vertex\TriangleList.cpp" />
     <ClCompile Include="Vertex\RectDemo.cpp" />
     <ClCompile Include="Vertex\UserInterfaceDemo.cpp" />
-    <ClCompile Include="Vertex\WorldDemo.cpp" />
+    <ClCompile Include="World\WorldDemo.cpp" />
+    <ClCompile Include="World\WorldDemo3.cpp" />
+    <ClCompile Include="World\WorldDemo2.cpp" />
+    <ClCompile Include="World\IndexDemo.cpp" />
+    <ClCompile Include="World\GridDemo.cpp" />
+    <ClCompile Include="Mesh\CubeDemo.cpp" />
+    <ClCompile Include="World\RotationDemo.cpp" />
+    <ClCompile Include="Texture\TextureDemo.cpp" />
+    <ClCompile Include="Texture\TextureLoadDemo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h" />
@@ -18,6 +26,14 @@
     <ClInclude Include="Vertex\TriangleList.h" />
     <ClInclude Include="Vertex\RectDemo.h" />
     <ClInclude Include="Vertex\UserInterfaceDemo.h" />
-    <ClInclude Include="Vertex\WorldDemo.h" />
+    <ClInclude Include="World\WorldDemo.h" />
+    <ClInclude Include="World\WorldDemo3.h" />
+    <ClInclude Include="World\WorldDemo2.h" />
+    <ClInclude Include="World\IndexDemo.h" />
+    <ClInclude Include="World\GridDemo.h" />
+    <ClInclude Include="Mesh\CubeDemo.h" />
+    <ClInclude Include="World\RotationDemo.h" />
+    <ClInclude Include="Texture\TextureLoadDemo.h" />
+    <ClInclude Include="Texture\TextureDemo.h" />
   </ItemGroup>
 </Project>
