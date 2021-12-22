@@ -13,12 +13,17 @@
 #include"Mesh/CubeDemo.h"
 #include"Texture/TextureDemo.h"
 #include"Texture/TextureLoadDemo.h"
+#include"Texture/TextureSamplerDemo.h"
+#include"Terrain/HeightMapDemo.h"
+#include"Terrain/NormalVectorDemo.h"
 
 void Main::Initialize()
 {
-
-	Push(new TextureLoadDemo);
-	Push(new TextureDemo);
+	Push(new NormalVectorDemo);
+	//Push(new HeightMapDemo);
+	//Push(new TextureSamplerDemo);
+	//Push(new TextureLoadDemo);
+	//Push(new TextureDemo);
 	//Push(new RotationDemo);
 	//Push(new  GridDemo);
 	//Push(new CubeDemo);
