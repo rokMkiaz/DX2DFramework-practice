@@ -11,7 +11,7 @@ void NormalVectorDemo::Initialize()
 
 
 	terrain = new Terrain(shader, L"Terrain/Gray256.png");
-	terrain->Pass(1);
+	terrain->Pass(0);
 	
 }
 

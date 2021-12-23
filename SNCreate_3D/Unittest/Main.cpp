@@ -16,10 +16,14 @@
 #include"Texture/TextureSamplerDemo.h"
 #include"Terrain/HeightMapDemo.h"
 #include"Terrain/NormalVectorDemo.h"
+#include"Terrain/GetHeightDemo.h"
+#include"Terrain/GetVerticalRaycast.h"
 
 void Main::Initialize()
 {
-	Push(new NormalVectorDemo);
+	Push(new GetVerticalRaycast);
+	//Push(new GetHeightDemo);
+	//Push(new NormalVectorDemo);
 	//Push(new HeightMapDemo);
 	//Push(new TextureSamplerDemo);
 	//Push(new TextureLoadDemo);
