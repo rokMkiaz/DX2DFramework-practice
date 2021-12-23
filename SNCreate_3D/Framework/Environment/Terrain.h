@@ -14,6 +14,9 @@ public:
 
 	void Pass(UINT val) { pass = val; }
 
+	float GetHeight(Vector3& position);
+	float GetVerticalRaycast(Vector3& position);
+
 private:
 	void CreateVertexData();
 	void CreateIndexData();

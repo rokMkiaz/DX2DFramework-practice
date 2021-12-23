@@ -25,6 +25,10 @@ Terrain::~Terrain()
 
 void Terrain::Update()
 {
+	static Vector3 direction = Vector3(-1, -1, -1);
+	ImGui::SliderFloat3("Direction", direction, -1, 1);
+	shader->AsVector("Direction")->SetFloatVector(direction);
+
 	Matrix world;
 	D3DXMatrixIdentity(&world);
 
@@ -35,13 +39,13 @@ void Terrain::Update()
  
 void Terrain::Render()
 {
-	for (int i = 0; i < vertexCount; i++)
-	{
-		Vector3 start = vertices[i].Position;
-		Vector3 end = vertices[i].Position + vertices[i].Normal * 2;
-
-		DebugLine::Get()->RenderLine(start, end, Color(0, 1, 0, 1));
-	}
+	//for (int i = 0; i < vertexCount; i++)
+	//{
+	//	Vector3 start = vertices[i].Position;
+	//	Vector3 end = vertices[i].Position + vertices[i].Normal * 2;
+	//
+	//	DebugLine::Get()->RenderLine(start, end, Color(0, 1, 0, 1));
+	//}
 
 	UINT stride = sizeof(TerrainVertex);
 	UINT offset = 0;
@@ -51,6 +55,78 @@ void Terrain::Render()
 	D3D::GetDC()->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 
 	shader->DrawIndexed(0, pass, indexCount);
+}
+
+float Terrain::GetHeight(Vector3& position)
+{
+	UINT x = (UINT)position.x;
+	UINT z = (UINT)position.z;
+
+	if (x < 0 || x > width) return FLT_MIN;
+	if (z < 0 || z > height) return FLT_MIN;
+
+
+	UINT index[4];
+	index[0] = width * z + x;
+	index[1] = width * (z + 1) + x;
+	index[2] = width * z + x + 1;
+	index[3] = width * (z + 1) + x + 1;
+
+	Vector3 v[4];
+	for (int i = 0; i < 4; i++)
+		v[i] = vertices[index[i]].Position;
+
+
+	float ddx = (position.x - v[0].x) / 1.0f;
+	float ddz = (position.z - v[0].z) / 1.0f;
+
+	Vector3 result;
+
+	if (ddx + ddz <= 1.0f) //매끄럽게 표현
+		result = v[0] + (v[2] - v[0]) * ddx + (v[1] - v[0]) * ddz;
+	else
+	{
+		ddx = 1.0f - ddx;
+		ddz = 1.0f - ddz;
+
+		result = v[3] + (v[1] - v[3]) * ddx + (v[2] - v[3]) * ddz;
+	}
+
+	return result.y;
+}
+
+float Terrain::GetVerticalRaycast(Vector3& position)
+{
+	UINT x = (UINT)position.x;
+	UINT z = (UINT)position.z;
+
+	if (x < 0 || x > width) return FLT_MIN;
+	if (z < 0 || z > height) return FLT_MIN;
+
+
+	UINT index[4];
+	index[0] = width * z + x;
+	index[1] = width * (z + 1) + x;
+	index[2] = width * z + x + 1;
+	index[3] = width * (z + 1) + x + 1;
+
+	Vector3 p[4];
+	for (int i = 0; i < 4; i++)
+		p[i] = vertices[index[i]].Position;
+
+	Vector3 start(position.x, 50.0f, position.z);
+	Vector3 direction(0, -1, 0);
+
+	float u, v, distance;
+	Vector3 result(-1, FLT_MIN, -1);
+
+	if (D3DXIntersectTri(&p[0], &p[1], &p[2], &start, &direction, &u, &v, &distance) == TRUE)
+		result = p[0] + (p[1] - p[0]) * u + (p[2] - p[0]) * v;
+
+	if (D3DXIntersectTri(&p[3], &p[1], &p[2], &start, &direction, &u, &v, &distance) == TRUE)
+		result = p[3] + (p[1] - p[3]) * u + (p[2] - p[3]) * v;
+
+	return result.y;
 }
 
 void Terrain::CreateVertexData()
