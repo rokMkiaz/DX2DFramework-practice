@@ -5,12 +5,13 @@
 #include"World\GridDemo.h"
 #include"World\WorldDemo3.h"
 #include"World/RotationDemo.h"
-#include"Vertex\UserInterfaceDemo.h"
-#include"Vertex\RectDemo.h"
-#include"Vertex\Vertex_Line.h"
-#include"Vertex\Vertex_Line2.h"
-#include"Vertex\TriangleList.h"
+#include"Vertex/UserInterfaceDemo.h"
+#include"Vertex/RectDemo.h"
+#include"Vertex/Vertex_Line.h"
+#include"Vertex/Vertex_Line2.h"
+#include"Vertex/TriangleList.h"
 #include"Mesh/CubeDemo.h"
+#include"Mesh/MeshDemo.h"
 #include"Texture/TextureDemo.h"
 #include"Texture/TextureLoadDemo.h"
 #include"Texture/TextureSamplerDemo.h"
@@ -21,7 +22,8 @@
 
 void Main::Initialize()
 {
-	Push(new GetVerticalRaycast);
+	Push(new MeshDemo);
+	//Push(new GetVerticalRaycast);
 	//Push(new GetHeightDemo);
 	//Push(new NormalVectorDemo);
 	//Push(new HeightMapDemo);
