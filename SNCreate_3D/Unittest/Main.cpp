@@ -19,10 +19,14 @@
 #include"Terrain/NormalVectorDemo.h"
 #include"Terrain/GetHeightDemo.h"
 #include"Terrain/GetVerticalRaycast.h"
+#include"Objects/CubeMapDemo.h"
+#include"Objects/CubeSkyDemo.h"
 
 void Main::Initialize()
 {
-	Push(new MeshDemo);
+	Push(new CubeSkyDemo);
+	//Push(new CubeMapDemo);
+	//Push(new MeshDemo);
 	//Push(new GetVerticalRaycast);
 	//Push(new GetHeightDemo);
 	//Push(new NormalVectorDemo);
