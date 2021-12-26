@@ -80,6 +80,10 @@ typedef D3DXPLANE Plane;
 #include "Renders/VertexLayouts.h"
 #include "Renders/Context.h"
 #include "Renders/DebugLine.h"
+#include "Renders/Buffers.h"
+#include "Renders/Transform.h"
+#include "Renders/PerFrame.h"
+#include "Renders/Renderer.h"
 
 #include "Meshes/Mesh.h"
 #include "Meshes/MeshQuad.h"
