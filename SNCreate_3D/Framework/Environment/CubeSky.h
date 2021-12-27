@@ -8,7 +8,7 @@ public:
 	void Update();
 	void Render();
 
-
+	
 
 private:
 	Shader* shader;
