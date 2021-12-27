@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="Vertex\Vertex_Line.cpp" />
+    <ClCompile Include="Vertex\Vertex_Line2.cpp" />
+    <ClCompile Include="Vertex\TriangleList.cpp" />
+    <ClCompile Include="Vertex\RectDemo.cpp" />
+    <ClCompile Include="Vertex\UserInterfaceDemo.cpp" />
+    <ClCompile Include="World\WorldDemo.cpp" />
+    <ClCompile Include="World\WorldDemo3.cpp" />
+    <ClCompile Include="World\WorldDemo2.cpp" />
+    <ClCompile Include="World\IndexDemo.cpp" />
+    <ClCompile Include="World\GridDemo.cpp" />
+    <ClCompile Include="Mesh\CubeDemo.cpp" />
+    <ClCompile Include="World\RotationDemo.cpp" />
+    <ClCompile Include="Texture\TextureDemo.cpp" />
+    <ClCompile Include="Texture\TextureLoadDemo.cpp" />
+    <ClCompile Include="Texture\TextureSamplerDemo.cpp" />
+    <ClCompile Include="Terrain\HeightMapDemo.cpp" />
+    <ClCompile Include="Terrain\NormalVectorDemo.cpp" />
+    <ClCompile Include="Terrain\GetHeightDemo.cpp" />
+    <ClCompile Include="Terrain\GetVerticalRaycast.cpp" />
+    <ClCompile Include="Mesh\MeshDemo.cpp" />
+    <ClCompile Include="Objects\CubeMapDemo.cpp" />
+    <ClCompile Include="Objects\CubeSkyDemo.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Main.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Vertex\Vertex_Line.h" />
+    <ClInclude Include="Vertex\Vertex_Line2.h" />
+    <ClInclude Include="Vertex\TriangleList.h" />
+    <ClInclude Include="Vertex\RectDemo.h" />
+    <ClInclude Include="Vertex\UserInterfaceDemo.h" />
+    <ClInclude Include="World\WorldDemo.h" />
+    <ClInclude Include="World\WorldDemo3.h" />
+    <ClInclude Include="World\WorldDemo2.h" />
+    <ClInclude Include="World\IndexDemo.h" />
+    <ClInclude Include="World\GridDemo.h" />
+    <ClInclude Include="Mesh\CubeDemo.h" />
+    <ClInclude Include="World\RotationDemo.h" />
+    <ClInclude Include="Texture\TextureLoadDemo.h" />
+    <ClInclude Include="Texture\TextureDemo.h" />
+    <ClInclude Include="Texture\TextureSamplerDemo.h" />
+    <ClInclude Include="Terrain\HeightMapDemo.h" />
+    <ClInclude Include="Terrain\NormalVectorDemo.h" />
+    <ClInclude Include="Terrain\GetHeightDemo.h" />
+    <ClInclude Include="Terrain\GetVerticalRaycast.h" />
+    <ClInclude Include="Mesh\MeshDemo.h" />
+    <ClInclude Include="Objects\CubeMapDemo.h" />
+    <ClInclude Include="Objects\CubeSkyDemo.h" />
+  </ItemGroup>
+</Project>
