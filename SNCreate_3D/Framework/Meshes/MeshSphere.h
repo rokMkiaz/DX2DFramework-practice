@@ -12,5 +12,5 @@ private:
 	float radius;
 
 	UINT stackCount;
-	UINT sliceCount;
+	UINT sliceCount; //구의 정밀도
 };

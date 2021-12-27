@@ -30,7 +30,7 @@ void MeshSphere::Create()
 
 			Vector3 p = Vector3
 			(
-				(radius * sinf(phi) * cosf(theta)),
+				(radius * sinf(phi) * cosf(theta)), //구면좌표계로 그림
 				(radius * cos(phi)),
 				(radius * sinf(phi) * sinf(theta))
 			);
