@@ -2,44 +2,13 @@
 #include "Main.h"
 #include "Systems/Window.h"
 
-#include"World\GridDemo.h"
-#include"World\WorldDemo3.h"
-#include"World/RotationDemo.h"
-#include"Vertex/UserInterfaceDemo.h"
-#include"Vertex/RectDemo.h"
-#include"Vertex/Vertex_Line.h"
-#include"Vertex/Vertex_Line2.h"
-#include"Vertex/TriangleList.h"
-#include"Mesh/CubeDemo.h"
-#include"Mesh/MeshDemo.h"
-#include"Texture/TextureDemo.h"
-#include"Texture/TextureLoadDemo.h"
-#include"Texture/TextureSamplerDemo.h"
-#include"Terrain/HeightMapDemo.h"
-#include"Terrain/NormalVectorDemo.h"
-#include"Terrain/GetHeightDemo.h"
-#include"Terrain/GetVerticalRaycast.h"
-#include"Objects/CubeMapDemo.h"
-#include"Objects/CubeSkyDemo.h"
+#include"ExportFile.h"
+#include"Demo/ModelDemo.h"
 
 void Main::Initialize()
 {
-	Push(new CubeSkyDemo);
-	//Push(new CubeMapDemo);
-	//Push(new MeshDemo);
-	//Push(new GetVerticalRaycast);
-	//Push(new GetHeightDemo);
-	//Push(new NormalVectorDemo);
-	//Push(new HeightMapDemo);
-	//Push(new TextureSamplerDemo);
-	//Push(new TextureLoadDemo);
-	//Push(new TextureDemo);
-	//Push(new RotationDemo);
-	//Push(new  GridDemo);
-	//Push(new CubeDemo);
-	//Push(new UserInterfaceDemo);
-	//Push(new RectDemo());
-	//Push(new TriangleList());
+	Push(new ExportFile());
+	Push(new ModelDemo());
 }
 
 void Main::Ready()
