@@ -9,7 +9,7 @@ public:
 public:
 	void ExportMesh(wstring savePath);
 
-private: //재귀사용
+private: 
 	void ReadBoneData(aiNode* node, int index, int parent);
 	void ReadMeshData(aiNode* node, int bone);  //Bone에 Mesh를 입히는 작업
 	void ReadSkinData(); //Skinning을 위한 정점데이터 정보
@@ -28,6 +28,14 @@ private:
 
 
 /// ///////////////////////////////////////////////////////////////////////////
+
+public: //애니메이션
+	void ClipList(vector<wstring>* list);
+	void ExportAnimClip(UINT index, wstring savePath);
+private:
+	struct asClip* ReadClipData( aiAnimation* animation);
+	void ReadKeyframeData(struct asClip* clip, aiNode* node, vector<struct asClipNode>& aiNodeInfos);
+	void WriteClipData(struct asClip* clip, wstring savePath);
 
 
 private:

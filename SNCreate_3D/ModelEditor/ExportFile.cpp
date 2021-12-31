@@ -4,9 +4,11 @@
 
 void ExportFile::Initialize()
 {
-	Airplane();
-	Tower();
-	Tank();
+
+
+	//Airplane();
+	//Tower();
+	//Tank();
 	Kachujin();
 }
 
@@ -39,10 +41,37 @@ void ExportFile::Tank()
 
 void ExportFile::Kachujin()
 {
-	Converter* conv = new Converter();
+	Converter* conv = NULL;
+
+	conv = new Converter();
 	conv->ReadFile(L"Kachujin/Mesh.fbx");
 	conv->ExportMesh(L"Kachujin/Mesh");
 	conv->ExportMaterial(L"Kachujin/Mesh");
 	SafeDelete(conv);
+
+	
+	conv = new Converter();
+	conv->ReadFile(L"Kachujin/Sword And Shield Idle.fbx");
+	conv->ExportAnimClip(0, L"Kachujin/Sword And Shield Idle");
+	SafeDelete(conv);
+
+	conv = new Converter();
+	conv->ReadFile(L"Kachujin/Sword And Shield Run.fbx");
+	conv->ExportAnimClip(0,L"Kachujin/Sword And Shield Run");
+	SafeDelete(conv);
+	 
+	conv = new Converter();
+	conv->ReadFile(L"Kachujin/Sword And Shield Slash.fbx");
+	conv->ExportAnimClip(0,L"Kachujin/Sword And Shield Slash");
+	SafeDelete(conv);
+	 
+	conv = new Converter();
+	conv->ReadFile(L"Kachujin/Salsa Dancing.fbx");
+	conv->ExportAnimClip(0,L"Kachujin/Salsa Dancing");
+	SafeDelete(conv);
+
+	
+	//vector<wstring> clipNames;
+	//conv->ClipList(&clipNames);
 }
 
